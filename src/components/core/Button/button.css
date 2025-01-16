@@ -1,0 +1,72 @@
+.button {
+  @apply flex items-center justify-center gap-2 rounded-lg text-sm font-medium focus:outline-none w-fit transform transition-all duration-300 ease-out;
+}
+
+.button-small {
+  @apply p-3;
+}
+
+.button-large {
+  @apply p-6;
+}
+
+.button-block {
+  @apply w-full;
+}
+
+.button-primary--filled {
+  @apply bg-green-primary-40 text-white-10;
+}
+
+.button-primary--filled-hover {
+  @apply bg-green-primary-50 text-white-10;
+}
+
+.button-primary--filled-focus {
+  @apply bg-green-primary-50 text-white-10;
+}
+
+.button-primary--filled-disabled {
+  @apply bg-green-primary-30 text-white-10 cursor-not-allowed;
+}
+
+.button-secondary--filled {
+  @apply bg-green-secondary-40 text-white-10;
+}
+
+.button-secondary--filled-hover {
+  @apply bg-green-secondary-50 text-white-10;
+}
+
+.button-secondary--filled-disabled {
+  @apply bg-green-secondary-30 text-white-10 cursor-not-allowed;
+}
+
+.button-danger--filled {
+  @apply bg-red-40 text-white-10;
+}
+
+.button-danger--filled-hover {
+  @apply bg-red-50 text-white-10;
+}
+
+.button-danger--filled-disabled {
+  @apply bg-red-30 text-white-10 cursor-not-allowed;
+}
+
+.spinner {
+  animation-name: spin;
+  animation-duration: 800ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
