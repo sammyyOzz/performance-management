@@ -1,4 +1,5 @@
 import formsPlugin from '@tailwindcss/forms'
+import tailwindAnimate from 'tailwindcss-animate'
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -14,9 +15,96 @@ export default {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
-  		colors: {}
+      colors: {
+        yellow: {
+          10: "#fef6e8",
+          20: "#fdf1dc",
+          30: "#fbe2b7",
+          40: "#f3a218",
+          50: "#db9216",
+          60: "#c28213",
+          70: "#b67a12",
+          80: "#92610e",
+          90: "#6d490b",
+          100: "#553908"
+        },
+        white: {
+          10: "#ffffff",
+          20: "#ffffff",
+          30: "#ffffff",
+          40: "#ffffff",
+          50: "#e6e6e6",
+          60: "#cccccc",
+          70: "#bfbfbf",
+          80: "#999999",
+          90: "#737373",
+          100: "#595959"
+        },
+        green: {
+          secondary: {
+            10: "#e7f5ec",
+            20: "#dbefe2",
+            30: "#b5dfc3",
+            40: "#0f973d",
+            50: "#0e8837",
+            60: "#0c7931",
+            70: "#0b712e",
+            80: "#095b25",
+            90: "#07441b",
+            100: "#053515"
+          },
+          primary: {
+            10: "#e6ebea",
+            20: "#d9e1df",
+            30: "#b0c2bd",
+            40: "#003a2b",
+            50: "#003427",
+            60: "#002e22",
+            70: "#002c20",
+            80: "#00231a",
+            90: "#001a13",
+            100: "#00140f"
+          },
+        },
+        red: {
+          10: "#fbe9e9",
+          20: "#f9dede",
+          30: "#f2bcba",
+          40: "#d42620",
+          50: "#bf221d",
+          60: "#aa1e1a",
+          70: "#9f1d18",
+          80: "#7f1713",
+          90: "#5f110e",
+          100: "#4a0d0b"
+        },
+        grey: {
+          10: "#ebebeb",
+          20: "#e0e0e0",
+          30: "#c0c0c0",
+          40: "#333333",
+          50: "#2e2e2e",
+          60: "#292929",
+          70: "#262626",
+          80: "#1f1f1f",
+          90: "#171717",
+          100: "#121212"
+        },
+        accent: {
+          10: "#fafff9",
+          20: "#f7fff6",
+          30: "#efffeb",
+          40: "#ccffc0",
+          50: "#b8e6ad",
+          60: "#a3cc9a",
+          70: "#99bf90",
+          80: "#7a9973",
+          90: "#5c7356",
+          100: "#475943"
+        },
+      }
   	}
   },
-  plugins: [formsPlugin, require("tailwindcss-animate")],
+  plugins: [formsPlugin, tailwindAnimate],
 }
 
