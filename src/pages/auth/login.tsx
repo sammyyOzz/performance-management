@@ -1,4 +1,5 @@
-import { BaseButton } from "@/components/core/Button"
+import { BaseButton, BaseInput } from "@/components/core"
+import { Eye, MessageCircle, User } from "iconsax-react"
 
 export const LoginPage = () => {
     return (
@@ -8,6 +9,10 @@ export const LoginPage = () => {
                 <p className="text-grey-40 text-base font-normal">Create an account to access this application</p>
             </div>
             <form className="flex flex-col gap-8 w-full">
+                <BaseInput label="EMAIL ADDRESS" type="text" value="Aijaysolomon68@gmail.com" disabled iconRight={<MessageCircle size="20" />} />
+                <BaseInput label="FULL NAME" type="text" placeholder="Enter full name" iconRight={<User size="20" />} />
+                <BaseInput label="PASSWORD" type="password" placeholder="Enter password" iconRight={<Eye size="20" />} />
+                <BaseInput label="CONFIRM PASSWORD" type="password" placeholder="Confirm password" iconRight={<Eye size="20" />} />
                 <BaseButton size="small" theme="primary" variant="filled" block>Accept invitation</BaseButton>
             </form>
         </div>
