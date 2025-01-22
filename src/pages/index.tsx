@@ -4,27 +4,38 @@ import { Add, ArrowDown2, ArrowRight2, Moneys, WalletMoney } from "iconsax-react
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent, } from "@/components/ui/chart"
 
 const chartData = [
-  { month: "Enterprise Content Management", desktop: 2 },
-  { month: "Optimization of Crude Oil Production to 4 million bpd", desktop: 4 },
-  { month: "Domestic Refining Capacity", desktop: 6 },
-  { month: "Real-time Surveillance in Oil and Gas infrastructures", desktop: 8 },
-  { month: "Optimization of Crude Oil and Gas reserves to 40 million barrels and 220tcf respectively", desktop: 3 },
-  { month: "Service Innovation and Improvement", desktop: 10 },
-  { month: "Performance Management System", desktop: 1 },
-  { month: "Stakeholders Engagement (MDA)", desktop: 5 },
+  { kra: "Enterprise Content Management", score: 2 },
+  { kra: "Optimization of Crude Oil Production to 4 million bpd", score: 4 },
+  { kra: "Domestic Refining Capacity", score: 6 },
+  { kra: "Real-time Surveillance in Oil and Gas infrastructures", score: 8 },
+  { kra: "Optimization of Crude Oil and Gas reserves to 40 million barrels and 220tcf respectively", score: 3 },
+  { kra: "Service Innovation and Improvement", score: 10 },
+  { kra: "Performance Management System", score: 1 },
+  { kra: "Stakeholders Engagement (MDA)", score: 5 },
+  { kra: "Enterprise Content Management", score: 2 },
+  { kra: "Optimization of Crude Oil Production to 4 million bpd", score: 4 },
+  { kra: "Domestic Refining Capacity", score: 6 },
+  { kra: "Real-time Surveillance in Oil and Gas infrastructures", score: 8 },
+  { kra: "Optimization of Crude Oil and Gas reserves to 40 million barrels and 220tcf respectively", score: 3 },
+  { kra: "Service Innovation and Improvement", score: 10 },
+  { kra: "Performance Management System", score: 1 },
+  { kra: "Stakeholders Engagement (MDA)", score: 5 },
 ]
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  score: {
+    label: "Score",
     color: "#0F973D",
   },
+  kra: {
+    color: "red"
+  }
 } satisfies ChartConfig
 
 export const DashboardPage = () => {
     return (
         <section className="flex py-9 px-5 md:px-8 lg:px-10 xl:px-12 2xl:px-0 page-height overflow-hidden">
             <div className="flex flex-col flex-1 gap-10 max-w-screen-2xl mx-auto">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col items-start gap-4 md:gap-0 md:flex-row md:items-center md:justify-between">
                     <div className="grid gap-0.5">
                         <h1 className="font-semibold text-black text-2xl">Summary</h1>
                         <p className="font-normal text-gray-500 text-sm">Review the progress of our mission, vision, and budget.</p>
@@ -40,7 +51,7 @@ export const DashboardPage = () => {
                         </BaseButton>
                     </div>
                 </div>
-                <div className="grid grid-cols-2 gap-7">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-7">
                     <div className="flex items-center gap-5 py-3 px-4 border border-[#DFE2E7] rounded-xl">
                         <div className="grid place-content-center size-[3.75rem] bg-[#AF52DE]/[0.13] rounded-full">
                             <WalletMoney size="30" color="#AF52DE"/>
@@ -61,7 +72,7 @@ export const DashboardPage = () => {
                     </div>
                 </div>
                 <div className="flex flex-col border border-[#DFE2E7] rounded-xl h-full overflow-hidden">
-                    <div className="flex items-center justify-between p-4 border-b border-b-[#DFE2E7]">
+                    <div className="flex gap-4 md:gap-0 items-center justify-between p-4 border-b border-b-[#DFE2E7]">
                         <div className="flex items-center gap-2">
                             <span className="text-base font-medium text-gray-600">Key Result Area</span>
                             <span className="size-[1.875rem] grid place-content-center rounded-full bg-gray-50 text-xs font-medium text-gray-600">12</span>
@@ -71,8 +82,8 @@ export const DashboardPage = () => {
                             <Add size="20" />
                         </BaseButton>
                     </div>
-                    <div className="flex items-center justify-center flex-1 px-6 py-16 overflow-scroll">
-                        <ChartContainer className="w-full min-h-auto max-h-96" config={chartConfig}>
+                    <div className="flex items-center justify-center flex-1 px-0 md:px-6 py-0 md:py-6 overflow-hidden">
+                        <ChartContainer className="flex w-full min-h-auto max-h-full" config={chartConfig}>
                             <BarChart
                                 accessibilityLayer
                                 data={chartData}
@@ -80,15 +91,15 @@ export const DashboardPage = () => {
                                 barSize={26}
                                 barGap={8}
                                 margin={{
-                                    left: -20,
+                                    left: -20
                                 }}
                             >
-                                <XAxis type="number" dataKey="desktop" scale="linear" domain={[0, 10]} ticks={[1,2,3,4,5,6,7,8,9,10]} tickLine={false} axisLine={false} />
+                                <XAxis type="number" dataKey="score" scale="linear" domain={[0, 10]} ticks={[1,2,3,4,5,6,7,8,9,10]} tickLine={false} axisLine={false} />
                                 <YAxis
-                                    dataKey="month"
+                                    dataKey="kra"
                                     type="category"
-                                    width={300}
-                                    tick={{ fill: "#475367", fontSize: 12, width: 300 }}
+                                    width={250}
+                                    tick={{ fill: "#475367", fontSize: 12, width: 250 }}
                                     tickLine={false}
                                     tickMargin={10}
                                     axisLine={false}
@@ -100,9 +111,10 @@ export const DashboardPage = () => {
                                 />
                                 <ChartTooltip
                                     cursor={false}
-                                    content={<ChartTooltipContent className="bg-white-10" hideLabel />}
+                                    key="kra"
+                                    content={<ChartTooltipContent className="bg-white-10 max-w-96" indicator="line" hidden />}
                                 />
-                                <Bar dataKey="desktop" className="flex-1" fill="var(--color-desktop)"  radius={[0,4,4,0]} />
+                                <Bar dataKey="score" values="kra" className="flex-1" fill="var(--color-score)" radius={[0, 4, 4, 0]} />
                             </BarChart>
                         </ChartContainer>
                     </div>
