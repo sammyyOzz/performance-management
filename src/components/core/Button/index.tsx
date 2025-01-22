@@ -21,7 +21,7 @@ interface BaseButtonProps extends ButtonProps {
     /**
      * What size of button to render
      */
-    size: "small" | "large";
+    size: "small" | "large" | "tiny";
     /**
      * What theme to render
      */
@@ -69,7 +69,7 @@ export const BaseButton: FC<BaseButtonProps> = forwardRef(({ block, children, lo
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: 25 }}
                                 key={buttonState}
-                                className={cn(loading ? "py-1" : "")}
+                                className={cn("flex items-center gap-2.5", loading ? "py-1" : "")}
                             >
                                 {buttonCopy[buttonState]}
                             </motion.span>

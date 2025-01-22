@@ -15,6 +15,12 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --viewport-height: 100vh; /* Set a CSS variable for viewport height */
+  --header-height: 79.38px; /* Set a CSS variable for header height */
+}
+
+.page-height {
+  height: calc(var(--viewport-height) - var(--header-height));
 }
 
 body {

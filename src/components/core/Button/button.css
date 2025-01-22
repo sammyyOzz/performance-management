@@ -2,6 +2,10 @@
   @apply flex items-center justify-center gap-2 rounded-lg text-sm font-medium focus:outline-none w-fit transform transition-all duration-300 ease-out;
 }
 
+.button-tiny {
+  @apply px-3 py-2;
+}
+
 .button-small {
   @apply p-3;
 }
@@ -28,6 +32,22 @@
 
 .button-primary--filled-disabled {
   @apply bg-green-primary-30 text-white-10 cursor-not-allowed;
+}
+
+.button-primary--outlined {
+  @apply bg-transparent border border-[#DFE2E7] text-grey-40;
+}
+
+.button-primary--outlined-hover {
+  @apply bg-transparent border border-[#DFE2E7] text-grey-50;
+}
+
+.button-primary--outlined-focus {
+  @apply bg-transparent border border-[#DFE2E7] text-grey-40;
+}
+
+.button-primary--outlined-disabled {
+  @apply bg-[#F5F6F7] border border-[#DFE2E7] text-grey-40 cursor-not-allowed;
 }
 
 .button-secondary--filled {
