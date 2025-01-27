@@ -1,5 +1,5 @@
-import { BaseButton, BaseInput } from "@/components/core"
-import { Eye, MessageCircle } from "iconsax-react"
+import { BaseButton, BaseInput, BasePasswordInput } from "@/components/core"
+import riMailLine from "@iconify-icons/ri/mail-line"
 
 export const LoginPage = () => {
     return (
@@ -10,8 +10,8 @@ export const LoginPage = () => {
             </div>
             <form className="flex flex-col gap-8 w-full">
                 <div className="flex flex-col gap-7">
-                    <BaseInput label="Email Address" type="email" placeholder="Enter email" iconRight={<MessageCircle size="20" />} />
-                    <BaseInput label="Password" type="password" placeholder="Enter password" iconRight={<Eye size="20" />} />
+                    <BaseInput label="Email Address" type="email" placeholder="Enter email" iconRight={riMailLine} />
+                    <BasePasswordInput label="Password" type="password" placeholder="Enter password" showPassword />
                 </div>
                 <BaseButton size="small" theme="primary" variant="filled" block>Login</BaseButton>
             </form>

@@ -27,7 +27,7 @@
 }
 
 .input--border-error {
-  @apply border border-red-50 transition-all duration-500 ease-out !important;
+  @apply border border-red-40 transition-all duration-500 ease-out !important;
 }
 
 .toggle-password-icon {

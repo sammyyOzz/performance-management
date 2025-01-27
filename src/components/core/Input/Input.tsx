@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { RenderIf } from "../RenderIf";
-import { type Icon } from 'iconsax-react';
+import { Icon, IconifyIcon } from "@iconify-icon/react"
 import { Description, Field, Input, Label } from "@headlessui/react";
 import React, { type AllHTMLAttributes, forwardRef, Fragment, ReactNode } from "react";
 import "./input.css";
@@ -37,11 +37,11 @@ interface InputProps extends AllHTMLAttributes<HTMLInputElement> {
   /**
    * Right icon to render
    */
-  iconRight?: ReactNode | Icon;
+  iconRight?: IconifyIcon;
   /**
    * Left icon to render
    */
-  iconLeft?: ReactNode | Icon;
+  iconLeft?: IconifyIcon;
   /**
    * Other unknown attributes
    */
@@ -69,9 +69,7 @@ export const BaseInput: React.FC<InputProps> = forwardRef(({ label, error, optio
             </RenderIf>
             <div className="input--inner">
                 <RenderIf condition={!!iconLeft}>
-                    <div className="size-5 left-2.5 text-gray-400 peer-hover:text-gray-500 peer-focus:text-gray-500 peer-disabled:text-gray-300 mr-auto my-auto inset-0 absolute z-10">
-                        {iconLeft as ReactNode}
-                    </div>
+                    <Icon icon={iconLeft as IconifyIcon} className="size-5 right-2.5 text-grey-30 peer-disabled:text-gray-300 ml-auto my-auto inset-0 absolute z-10" width={20} height={20} />
                 </RenderIf>
                 <Input as={Fragment}>
                     {
@@ -84,9 +82,7 @@ export const BaseInput: React.FC<InputProps> = forwardRef(({ label, error, optio
                     }
                 </Input>
                 <RenderIf condition={!!iconRight}>
-                    <div className="size-5 right-2.5 text-grey-30 peer-disabled:text-gray-300 ml-auto my-auto inset-0 absolute z-10">
-                        {iconRight as ReactNode}
-                    </div>
+                    <Icon icon={iconRight as IconifyIcon} className="size-5 right-4 text-grey-30 peer-disabled:text-gray-300 peer-focus:text-green-primary-40 transition-colors duration-500 ease-out ml-auto my-auto inset-0 absolute z-10" width={20} height={20} />
                 </RenderIf>
             </div>
             <RenderIf condition={!!help}>
