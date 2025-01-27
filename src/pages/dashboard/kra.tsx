@@ -1,8 +1,9 @@
-import { BaseButton, BaseSearch } from "@/components/core"
-import { cn } from "@/lib/utils"
-import { ArrowDown2, Moneys, More2 } from "iconsax-react"
-import { motion } from "motion/react"
 import { useState } from "react"
+import { cn } from "@/lib/utils"
+import { motion } from "motion/react"
+import { ArrowDown2, Moneys, More2 } from "iconsax-react"
+import { BaseButton, BaseSearch, Breadcrumb } from "@/components/core"
+import { Pagination } from "@/components/core/Pagination"
 
 export const KraPage = () => {
     const tabs = ["all", "active", "done"]
@@ -13,10 +14,15 @@ export const KraPage = () => {
         { icon: <Moneys size="20" color="#003A2B"/>, label: "Total Donor Funding", value: "₦0" },
         { icon: <Moneys size="20" color="#003A2B"/>, label: "Total Other Sources", value: "₦0" },
     ]
+    const breadcrumbs = [
+        { label: "Dashboard", href: "/dashboard" },
+        { label: "View KRAs", href: "/dashboard/kra" },
+    ]
     return (
         <section className="flex py-9 px-5 md:px-8 lg:px-10 xl:px-12 2xl:px-0 page-height overflow-hidden">
             <div className="flex flex-col flex-1 gap-10 max-w-screen-2xl mx-auto">
-                <div>
+                <div className="flex flex-col gap-5">
+                    <Breadcrumb items={breadcrumbs} />
                     <div className="grid gap-8">
                         <div className="flex flex-col items-start gap-4 md:gap-0 md:flex-row md:items-center md:justify-between py-2 border-b border-b-[#DFE2E7]">
                             <div className="grid gap-0.5">
@@ -65,6 +71,7 @@ export const KraPage = () => {
                             <BaseSearch type="text" placeholder="Search..." />
                         </div>
                     </div>
+                    <Pagination currentPage={1} totalPages={5} prev={() => {}} next={() => {}} />
                 </div>
             </div>
         </section>

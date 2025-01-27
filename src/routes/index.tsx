@@ -1,10 +1,9 @@
 import { ReactNode } from "react";
-import { AuthRoutes, KraRoutes } from "./modules";
+import { Routes, Route } from "react-router";
 import AuthLayout from "@/layouts/auth-layout";
 import { AnimatePresence } from "motion/react";
-import { Routes, Route } from "react-router";
+import { AuthRoutes, DashboardRoutes } from "./modules";
 import DashboardLayout from "@/layouts/dashboard-layout";
-import { DashboardPage } from "@/pages";
 
 
 function LocationProvider({ children }: { children: ReactNode }) {
@@ -18,8 +17,7 @@ const Router = () => {
                 <Route path="auth/*" element={<LocationProvider><AuthRoutes /></LocationProvider>} />
             </Route>
             <Route element={<DashboardLayout />}>
-                <Route index element={<LocationProvider><DashboardPage /></LocationProvider>} />
-                <Route path="kra" element={<LocationProvider><KraRoutes /></LocationProvider>} />
+                <Route path="dashboard/*" element={<LocationProvider><DashboardRoutes /></LocationProvider>} />
             </Route>
         </Routes>
     );

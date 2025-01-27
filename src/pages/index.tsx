@@ -2,6 +2,7 @@ import { BaseButton } from "@/components/core"
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import { Add, ArrowDown2, ArrowRight2, Moneys, WalletMoney } from "iconsax-react"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent, } from "@/components/ui/chart"
+import { Link } from "react-router"
 
 const chartData = [
   { kra: "Enterprise Content Management", weight: 2 },
@@ -45,10 +46,12 @@ export const DashboardPage = () => {
                             2024
                             <ArrowDown2 size="14" />
                         </BaseButton>
-                        <BaseButton size="tiny" theme="primary" variant="filled">
-                            View breakdown of KRAs
-                            <ArrowRight2 size="20" />
-                        </BaseButton>
+                        <Link to="/dashboard/kra" className="button button-tiny button-primary--filled-focus">
+                            <span className="flex items-center gap-2.5">
+                                View breakdown of KRAs
+                                <ArrowRight2 size="20" />
+                            </span>
+                        </Link>
                     </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-7">
