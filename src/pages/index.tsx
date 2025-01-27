@@ -4,26 +4,26 @@ import { Add, ArrowDown2, ArrowRight2, Moneys, WalletMoney } from "iconsax-react
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent, } from "@/components/ui/chart"
 
 const chartData = [
-  { kra: "Enterprise Content Management", score: 2 },
-  { kra: "Optimization of Crude Oil Production to 4 million bpd", score: 4 },
-  { kra: "Domestic Refining Capacity", score: 6 },
-  { kra: "Real-time Surveillance in Oil and Gas infrastructures", score: 8 },
-  { kra: "Optimization of Crude Oil and Gas reserves to 40 million barrels and 220tcf respectively", score: 3 },
-  { kra: "Service Innovation and Improvement", score: 10 },
-  { kra: "Performance Management System", score: 1 },
-  { kra: "Stakeholders Engagement (MDA)", score: 5 },
-  { kra: "Enterprise Content Management", score: 2 },
-  { kra: "Optimization of Crude Oil Production to 4 million bpd", score: 4 },
-  { kra: "Domestic Refining Capacity", score: 6 },
-  { kra: "Real-time Surveillance in Oil and Gas infrastructures", score: 8 },
-  { kra: "Optimization of Crude Oil and Gas reserves to 40 million barrels and 220tcf respectively", score: 3 },
-  { kra: "Service Innovation and Improvement", score: 10 },
-  { kra: "Performance Management System", score: 1 },
-  { kra: "Stakeholders Engagement (MDA)", score: 5 },
+  { kra: "Enterprise Content Management", weight: 2 },
+  { kra: "Optimization of Crude Oil Production to 4 million bpd", weight: 4 },
+  { kra: "Domestic Refining Capacity", weight: 6 },
+  { kra: "Real-time Surveillance in Oil and Gas infrastructures", weight: 8 },
+  { kra: "Optimization of Crude Oil and Gas reserves to 40 million barrels and 220tcf respectively", weight: 3 },
+  { kra: "Service Innovation and Improvement", weight: 10 },
+  { kra: "Performance Management System", weight: 1 },
+  { kra: "Stakeholders Engagement (MDA)", weight: 5 },
+  { kra: "Enterprise Content Management", weight: 2 },
+  { kra: "Optimization of Crude Oil Production to 4 million bpd", weight: 4 },
+  { kra: "Domestic Refining Capacity", weight: 6 },
+  { kra: "Real-time Surveillance in Oil and Gas infrastructures", weight: 8 },
+  { kra: "Optimization of Crude Oil and Gas reserves to 40 million barrels and 220tcf respectively", weight: 3 },
+  { kra: "Service Innovation and Improvement", weight: 10 },
+  { kra: "Performance Management System", weight: 1 },
+  { kra: "Stakeholders Engagement (MDA)", weight: 5 },
 ]
 const chartConfig = {
-  score: {
-    label: "Score",
+  weight: {
+    label: "Weight",
     color: "#0F973D",
   },
   kra: {
@@ -94,7 +94,7 @@ export const DashboardPage = () => {
                                     left: -20
                                 }}
                             >
-                                <XAxis type="number" dataKey="score" scale="linear" domain={[0, 10]} ticks={[1,2,3,4,5,6,7,8,9,10]} tickLine={false} axisLine={false} />
+                                <XAxis type="number" dataKey="weight" scale="linear" domain={[0, 10]} ticks={[1,2,3,4,5,6,7,8,9,10]} tickLine={false} axisLine={false} />
                                 <YAxis
                                     dataKey="kra"
                                     type="category"
@@ -114,7 +114,7 @@ export const DashboardPage = () => {
                                     key="kra"
                                     content={<ChartTooltipContent className="bg-white-10 max-w-96" indicator="line" hidden />}
                                 />
-                                <Bar dataKey="score" values="kra" className="flex-1" fill="var(--color-score)" radius={[0, 4, 4, 0]} />
+                                <Bar dataKey="weight" values="kra" className="flex-1" fill="var(--color-weight)" radius={[0, 4, 4, 0]} />
                             </BarChart>
                         </ChartContainer>
                     </div>
