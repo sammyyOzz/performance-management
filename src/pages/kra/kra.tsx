@@ -1,7 +1,12 @@
-import { BaseButton } from "@/components/core"
+import { BaseButton, BaseSearch } from "@/components/core"
+import { cn } from "@/lib/utils"
 import { ArrowDown2, Moneys, More2 } from "iconsax-react"
+import { motion } from "motion/react"
+import { useState } from "react"
 
 export const KraPage = () => {
+    const tabs = ["all", "active", "done"]
+    const [activeTab, setActiveTab] = useState(tabs[0])
     const cards = [
         { icon: <More2 size="20" color="#003A2B" />, label: "Total Weights", value: "10" },
         { icon: <Moneys size="20" color="#003A2B"/>, label: "Total Budget Released", value: "₦0" },
@@ -39,6 +44,25 @@ export const KraPage = () => {
                                     </div>
                                 )
                             }
+                        </div>
+                    </div>
+                </div>
+                <div className="flex flex-col gap-4">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1 p-1 rounded-lg w-[14.5rem] bg-[#F6F8FA]">
+                            {
+                                tabs.map((tab) =>
+                                    <motion.button key={tab} onClick={() => setActiveTab(tab)} className={cn("capitalize py-1 flex-1 font-medium text-sm rounded relative", activeTab === tab ? "text-gray-900" : "text-gray-400")}>
+                                        {
+                                            activeTab === tab ? <motion.div layoutId="active-background" id="active-background" className="absolute inset-0 bg-white-10 rounded" style={{ boxShadow: "0px 2px 4px 0px rgba(27, 28, 29, 0.02) 0px 6px 10px 0px rgba(27, 28, 29, 0.06)" }} /> : null
+                                        }
+                                        <span className="isolate">{tab}</span>
+                                    </motion.button>
+                                )
+                            }
+                        </div>
+                        <div className="w-96">
+                            <BaseSearch type="text" placeholder="Search..." />
                         </div>
                     </div>
                 </div>

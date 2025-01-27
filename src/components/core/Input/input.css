@@ -51,7 +51,7 @@
 }
 
 .search-input {
-  @apply rounded-md w-full text-base block py-[0.4379rem] pl-8 transition-all duration-300 ease-out !important;
+  @apply rounded-lg w-full text-sm block py-2 pl-9 transition-all duration-300 ease-out !important;
 }
 
 .PhoneInputInput {
