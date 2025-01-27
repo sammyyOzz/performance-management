@@ -4,7 +4,7 @@ import { Icon } from "@iconify-icon/react"
 import { Notification } from "iconsax-react"
 import { appRoutes } from "@/constants/routes"
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react"
-import { AnimatePresence, motion } from "motion/react"
+import { motion } from "motion/react"
 import riArrowDownSLine from "@iconify-icons/ri/arrow-down-s-line"
 
 export const Header = () => {
@@ -21,13 +21,11 @@ export const Header = () => {
                                 {({ isActive }) => (
                                     <Fragment>
                                         <span className={isActive ? "text-green-primary-40" : "text-[#98A2B3]"}>{route.name}</span>
-                                        <AnimatePresence>
                                             {
                                                 isActive ? (
-                                                    <motion.div layout className="inset-x-0 bg-green-primary-40 h-1 absolute bottom-0" />
+                                                    <motion.div layoutId="underline" id="underline" className="inset-x-0 bg-green-primary-40 h-1 absolute bottom-0" />
                                                 ) : null
                                             }
-                                        </AnimatePresence>
                                     </Fragment>
                                 )}
                             </NavLink>

@@ -28,7 +28,7 @@ export const KraPage = () => {
                         <div className="grid grid-cols-4 gap-10">
                             {
                                 cards.map((card, index) =>
-                                    <div key={index} className="flex items-center gap-5 py-3 px-4 border border-[#DFE2E7] rounded-xl">
+                                    <div key={index} className="flex items-center gap-3 py-3 px-4 border border-[#DFE2E7] rounded-xl">
                                         <div className="grid place-content-center size-10 bg-green-primary-10 rounded-full">
                                             {card.icon}
                                         </div>
