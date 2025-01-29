@@ -1,2 +1,5 @@
 export * from "./dashboard"
 export * from "./kra"
+export * from "./view-kra"
+export * from "./view-kra/overview"
+export * from "./view-kra/responsibility"

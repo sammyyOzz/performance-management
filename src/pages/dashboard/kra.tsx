@@ -116,7 +116,7 @@ export const KraPage = () => {
 
     };
     return (
-        <section className="flex py-9 px-5 md:px-8 lg:px-10 xl:px-12 2xl:px-0 page-height overflow-hidden">
+        <section className="flex py-9 px-5 md:px-8 lg:px-10 xl:px-12 2xl:px-0 page-height overflow-y-scroll">
             <div className="flex flex-col flex-1 gap-10 max-w-screen-2xl mx-auto">
                 <div className="flex flex-col gap-5">
                     <Breadcrumb items={breadcrumbs} />

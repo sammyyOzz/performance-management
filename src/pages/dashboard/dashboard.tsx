@@ -34,7 +34,7 @@ const chartConfig = {
 
 export const DashboardPage = () => {
     return (
-        <section className="flex py-9 px-5 md:px-8 lg:px-10 xl:px-12 2xl:px-0 page-height overflow-hidden">
+        <section className="flex py-9 px-5 md:px-8 lg:px-10 xl:px-12 2xl:px-0 page-height overflow-y-scroll">
             <div className="flex flex-col flex-1 gap-10 max-w-screen-2xl mx-auto">
                 <div className="flex flex-col items-start gap-4 md:gap-0 md:flex-row md:items-center md:justify-between">
                     <div className="grid gap-0.5">

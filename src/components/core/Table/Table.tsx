@@ -187,7 +187,7 @@ export const Table: React.FC<TableProps> = ({
       </div>
       <RenderIf condition={paginateData && (totalCount as number) > 0 && !loading}>
         <Pagination
-          className="px-0 py-3"
+          className="px-0 pb-6"
           count={totalCount as number}
           currentPage={page as number}
           dataLength={totalCount as number}
