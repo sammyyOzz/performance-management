@@ -4,6 +4,7 @@ import AuthLayout from "@/layouts/auth-layout";
 import { AnimatePresence } from "motion/react";
 import { AuthRoutes, DashboardRoutes } from "./modules";
 import DashboardLayout from "@/layouts/dashboard-layout";
+import { Home } from "@/pages";
 
 
 function LocationProvider({ children }: { children: ReactNode }) {
@@ -17,6 +18,7 @@ const Router = () => {
                 <Route path="auth/*" element={<LocationProvider><AuthRoutes /></LocationProvider>} />
             </Route>
             <Route element={<DashboardLayout />}>
+                <Route index element={<LocationProvider><Home /></LocationProvider>} />
                 <Route path="dashboard/*" element={<LocationProvider><DashboardRoutes /></LocationProvider>} />
             </Route>
         </Routes>

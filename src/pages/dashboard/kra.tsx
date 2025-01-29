@@ -1,11 +1,18 @@
 import { useState } from "react"
 import { cn } from "@/lib/utils"
 import { motion } from "motion/react"
-import { ArrowDown2, Moneys, More2 } from "iconsax-react"
-import { BaseButton, BaseSearch, Breadcrumb } from "@/components/core"
-import { Pagination } from "@/components/core/Pagination"
+import { ArrowDown2, ArrowRight2, Moneys, More2 } from "iconsax-react"
+import { BaseButton, BaseSearch, Breadcrumb, Table } from "@/components/core"
+import { Link, useLocation } from "react-router"
+import { getPaginationParams, updateQueryParams } from "@/hooks/usePaginationParams"
 
 export const KraPage = () => {
+    const location = useLocation()
+    const [itemsPerPage] = useState(15)
+    const searchParams = new URLSearchParams(location.search)
+    const [kraFilters, setKraFilters] = useState(
+        getPaginationParams(searchParams, { page: 1 })
+    )
     const tabs = ["all", "active", "done"]
     const [activeTab, setActiveTab] = useState(tabs[0])
     const cards = [
@@ -18,6 +25,96 @@ export const KraPage = () => {
         { label: "Dashboard", href: "/dashboard" },
         { label: "View KRAs", href: "/dashboard/kra" },
     ]
+
+    const columns = [
+        {
+            enableSorting: false,
+            accessorKey: "objective",
+            header: () => "Objective",
+            cell: () => {
+                return (
+                    <span className="line-clamp-2">Optimization of Crude Oil and Gas reserves to 40 million barrels and 220tcf respectively</span>
+                )
+            }
+        },
+        {
+            accessorKey: "weights",
+            header: () => "Weights",
+            cell: () => {
+                return (
+                    <span className="line-clamp-2">1</span>
+                )
+            }
+        },
+        {
+            enableSorting: false,
+            accessorKey: "budget_allocation",
+            header: () => "Budget Allocation",
+            cell: () => {
+                return (
+                    <span className="line-clamp-2">₦0</span>
+                )
+            }
+        },
+        {
+            enableSorting: false,
+            accessorKey: "budget_released",
+            header: () => "Budget Released",
+            cell: () => {
+                return (
+                    <span className="line-clamp-2">₦0</span>
+                )
+            }
+        },
+        {
+            enableSorting: false,
+            accessorKey: "funding",
+            header: () => "Donor Funding",
+            cell: () => {
+                return (
+                    <span className="line-clamp-2">₦0</span>
+                )
+            }
+        },
+        {
+            enableSorting: false,
+            accessorKey: "other_sources",
+            header: () => "Other Sources",
+            cell: () => {
+                return (
+                    <span className="line-clamp-2">₦0</span>
+                )
+            }
+        },
+        {
+            enableSorting: false,
+            accessorKey: "status",
+            header: () => "Status"
+        },
+        {
+            enableSorting: false,
+            accessorKey: "action",
+            header: () => "Action",
+            cell: () => {
+                return (
+                    <Link to="/dashboard/kra/1" className="button button-tiny button-primary--outlined">
+                        View
+                        <ArrowRight2 size="14" />
+                    </Link>
+                )
+            }
+        },
+    ]
+
+    const handlePageChange = async (page: number) => {
+        // in a real page, this function would paginate the data from the backend
+        setKraFilters((prev) => {
+            const updatedFilters = { ...prev, page };
+            updateQueryParams(updatedFilters); // Use the updated filters directly
+            return updatedFilters;
+        });
+
+    };
     return (
         <section className="flex py-9 px-5 md:px-8 lg:px-10 xl:px-12 2xl:px-0 page-height overflow-hidden">
             <div className="flex flex-col flex-1 gap-10 max-w-screen-2xl mx-auto">
@@ -71,7 +168,15 @@ export const KraPage = () => {
                             <BaseSearch type="text" placeholder="Search..." />
                         </div>
                     </div>
-                    <Pagination currentPage={1} totalPages={5} prev={() => {}} next={() => {}} />
+                    <Table
+                        columns={columns}
+                        data={[""]}
+                        perPage={itemsPerPage}
+                        page={Number(kraFilters.page)}
+                        onPageChange={handlePageChange}
+                        totalCount={30}
+                        emptyStateText="We couldn't find any kra on the system."
+                    />
                 </div>
             </div>
         </section>

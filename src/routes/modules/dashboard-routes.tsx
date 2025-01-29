@@ -1,6 +1,5 @@
 import { Routes, Route } from "react-router";
-import { KraPage } from "@/pages/dashboard";
-import { DashboardPage } from "@/pages";
+import { DashboardPage, KraPage } from "@/pages/dashboard";
 
 const DashboardRoutes = () => {
   return (

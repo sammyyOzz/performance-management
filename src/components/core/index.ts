@@ -1,4 +1,6 @@
 export * from "./Breadcrumb"
 export * from "./Button"
 export * from "./Input"
+export * from "./Pagination"
 export * from "./RenderIf"
+export * from "./Table"
