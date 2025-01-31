@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { Routes, Route } from "react-router";
 import AuthLayout from "@/layouts/auth-layout";
 import { AnimatePresence } from "motion/react";
-import { AuthRoutes, DashboardRoutes } from "./modules";
+import { AuthRoutes, DashboardRoutes, KRAsRoutes } from "./modules";
 import DashboardLayout from "@/layouts/dashboard-layout";
 import { Home } from "@/pages";
 
@@ -20,6 +20,7 @@ const Router = () => {
             <Route element={<DashboardLayout />}>
                 <Route index element={<LocationProvider><Home /></LocationProvider>} />
                 <Route path="dashboard/*" element={<LocationProvider><DashboardRoutes /></LocationProvider>} />
+                <Route path="kra/*" element={<LocationProvider><KRAsRoutes /></LocationProvider>} />
             </Route>
         </Routes>
     );

@@ -1,11 +1,12 @@
 import { Routes, Route } from "react-router";
-import { InvitePage, LoginPage } from "@/pages/auth"
+import { ForgotPasswordPage, InvitePage, LoginPage } from "@/pages/auth"
 
 const AuthRoutes = () => {
   return (
     <Routes>
       <Route path="invite" element={<InvitePage />} />
       <Route path="login" element={<LoginPage />} />
+      <Route path="forgot-password" element={<ForgotPasswordPage />} />
     </Routes>
   );
 };
