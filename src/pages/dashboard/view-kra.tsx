@@ -1,12 +1,17 @@
-import { Fragment } from "react"
+import { Fragment, useCallback, useState } from "react"
 import { motion } from "motion/react"
 import { Icon } from "@iconify-icon/react"
 import riPencilLine from "@iconify-icons/ri/pencil-line"
 import { NavLink, Outlet } from "react-router"
 import riDeleteBin6Line from "@iconify-icons/ri/delete-bin-6-line"
 import { BaseButton, Breadcrumb } from "@/components/core"
+import { DeleteKraDetail, EditKraDetail } from "@/components/page/dashboard"
 
 export const ViewDashboardKraPage = () => {
+    const [toggleModals, setToggleModals] = useState({
+        openDeleteKraDetail: false,
+        openEditKraDetail: false
+    })
 
     const kraRoutes = [
         { name: "Overview", path: "/dashboard/kra/1" },
@@ -18,6 +23,20 @@ export const ViewDashboardKraPage = () => {
         { label: "View KRAs", href: "/dashboard/kra" },
         { label: "KRA Detail", href: "/dashboard/kra/1" },
     ]
+
+    const toggleDeleteKraDetail = useCallback(() => {
+      setToggleModals((prev) => ({
+        ...prev,
+        openDeleteKraDetail: !toggleModals.openDeleteKraDetail,
+      }))
+    },[toggleModals.openDeleteKraDetail])
+
+    const toggleEditKraDetail = useCallback(() => {
+      setToggleModals((prev) => ({
+        ...prev,
+        openEditKraDetail: !toggleModals.openEditKraDetail,
+      }))
+    },[toggleModals.openEditKraDetail])
     return (
         <section className="flex py-9 px-5 md:px-8 lg:px-10 xl:px-12 2xl:px-0 page-height overflow-y-scroll">
             <div className="flex flex-col flex-1 gap-5 max-w-screen-2xl mx-auto">
@@ -29,11 +48,11 @@ export const ViewDashboardKraPage = () => {
                             <p className="font-normal text-gray-500 text-sm">See the key result area of the organisation</p>
                         </div>
                         <div className="flex items-center justify-end gap-4">
-                            <BaseButton size="tiny" theme="primary" variant="outlined">
+                            <BaseButton type="button" size="tiny" theme="primary" variant="outlined" onClick={() => toggleEditKraDetail()}>
                                 <Icon icon={riPencilLine} width={16} height={16} />
                                 Edit
                             </BaseButton>
-                            <BaseButton size="tiny" theme="danger" variant="filled">
+                            <BaseButton type="button" size="tiny" theme="danger" variant="filled" onClick={() => toggleDeleteKraDetail()}>
                                 <Icon icon={riDeleteBin6Line} width={16} height={16} />
                                 Delete
                             </BaseButton>
@@ -62,6 +81,8 @@ export const ViewDashboardKraPage = () => {
                     <Outlet />
                 </div>
             </div>
+            <DeleteKraDetail isOpen={toggleModals.openDeleteKraDetail} close={() => toggleDeleteKraDetail()} />
+            <EditKraDetail isOpen={toggleModals.openEditKraDetail} close={() => toggleEditKraDetail()} />
         </section>
     )
 }
