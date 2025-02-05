@@ -80,10 +80,12 @@ export const DashboardPage = () => {
                             <span className="text-base font-medium text-gray-600">Key Result Area</span>
                             <span className="size-[1.875rem] grid place-content-center rounded-full bg-gray-50 text-xs font-medium text-gray-600">12</span>
                         </div>
-                        <BaseButton size="tiny" theme="primary" variant="filled">
-                            Create a key result area
-                            <Add size="20" />
-                        </BaseButton>
+                        <Link to="/dashboard/kra/create" className="button button-tiny button-primary--filled-focus">
+                            <span className="flex items-center gap-2.5">
+                                Create a key result area
+                                <Add size="20" />
+                            </span>
+                        </Link>
                     </div>
                     <div className="flex items-center justify-center flex-1 px-0 md:px-6 py-0 md:py-6 overflow-hidden">
                         <ChartContainer className="flex w-full min-h-auto max-h-full" config={chartConfig}>

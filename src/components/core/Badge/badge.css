@@ -1,0 +1,19 @@
+.badge {
+  @apply rounded-md p-1 flex items-center gap-1 w-fit;
+}
+
+.badge-completed {
+  @apply bg-green-secondary-10 text-green-secondary-40;
+}
+
+.badge-completed-icon {
+  @apply bg-green-secondary-40;
+}
+
+.badge-pending {
+  @apply bg-yellow-10 text-yellow-40;
+}
+
+.badge-pending-icon {
+  @apply bg-yellow-40;
+}

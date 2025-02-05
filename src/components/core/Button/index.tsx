@@ -69,7 +69,8 @@ export const BaseButton: FC<BaseButtonProps> = forwardRef(({ block, children, lo
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: 25 }}
                                 key={buttonState}
-                                className={cn("flex items-center gap-2.5", loading ? "py-1" : "")}
+                                layout
+                                className={cn("flex items-center text-center justify-center gap-2.5", loading ? "py-1" : "")}
                             >
                                 {buttonCopy[buttonState]}
                             </motion.span>

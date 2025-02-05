@@ -2,7 +2,7 @@ import { useState } from "react"
 import { cn } from "@/lib/utils"
 import { motion } from "motion/react"
 import { ArrowDown2, ArrowRight2, Moneys, More2 } from "iconsax-react"
-import { BaseButton, BaseSearch, Breadcrumb, Table } from "@/components/core"
+import { Badge, BaseButton, BaseSearch, Breadcrumb, Table } from "@/components/core"
 import { Link, useLocation } from "react-router"
 import { getPaginationParams, updateQueryParams } from "@/hooks/usePaginationParams"
 
@@ -89,7 +89,12 @@ export const KraPage = () => {
         {
             enableSorting: false,
             accessorKey: "status",
-            header: () => "Status"
+            header: () => "Status",
+            cell: () => {
+                return (
+                    <Badge status="completed" label="done" />
+                )
+            }
         },
         {
             enableSorting: false,
