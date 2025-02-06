@@ -1,5 +1,6 @@
-import { BaseButton, BaseInput } from "@/components/core"
+import { Link } from "react-router"
 import riMailLine from "@iconify-icons/ri/mail-line"
+import { BaseButton, BaseInput } from "@/components/core"
 
 export const ForgotPasswordPage = () => {
     return (
@@ -12,7 +13,10 @@ export const ForgotPasswordPage = () => {
                 <div className="flex flex-col gap-7">
                     <BaseInput label="Email Address" type="email" placeholder="Enter your email address" iconRight={riMailLine} />
                 </div>
-                <BaseButton size="small" theme="primary" variant="filled" block>Continue</BaseButton>
+                <div className="grid gap-2">
+                    <BaseButton size="small" theme="primary" variant="filled" block>Continue</BaseButton>
+                    <Link to="/auth/login" className="button button-small button-block button-primary--ghost">Remember Password?</Link>
+                </div>
             </form>
         </div>
     )
