@@ -1,0 +1,11 @@
+.toast-container {
+  @apply flex relative items-center gap-3 rounded px-4 py-3 bg-white-10 !important;
+}
+
+.toast-message {
+  @apply text-grey-40 font-semibold text-sm !important;
+}
+
+.toast-button {
+  @apply size-5 grid place-content-center text-black !important;
+}

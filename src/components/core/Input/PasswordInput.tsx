@@ -126,7 +126,7 @@ export const BasePasswordInput = forwardRef(function PasswordInput({ label, erro
             <AnimatePresence>
                 {
                     error ? (
-                        <motion.span initial={{ height: 0 }} animate={{ height: "auto" }} exit={{ height: 0 }} className="soft-input--error">{error}</motion.span>
+                        <motion.span initial={{ height: 0 }} animate={{ height: "auto" }} exit={{ height: 0 }} className="input--error">{error}</motion.span>
                     ) : null
                 }
             </AnimatePresence>

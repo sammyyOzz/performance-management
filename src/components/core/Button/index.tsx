@@ -31,12 +31,16 @@ interface BaseButtonProps extends ButtonProps {
      */
     variant: "filled" | "ghost" | "outlined";
     /**
+     * Type of html button
+     */
+    type?: "button" | "submit" | "reset";
+    /**
      * Other unknown attributes
      */
     [key: PropertyKey]: any;
 }
 
-export const BaseButton: FC<BaseButtonProps> = forwardRef(({ block, children, loading, size, theme, variant, ...props }, ref: LegacyRef<HTMLButtonElement>) => {
+export const BaseButton: FC<BaseButtonProps> = forwardRef(({ block, children, loading, size, theme, variant, type, ...props }, ref: LegacyRef<HTMLButtonElement>) => {
     const buttonState = useMemo(() => {
         return loading ? "loading" : "idle"
     }, [loading]);
@@ -47,7 +51,7 @@ export const BaseButton: FC<BaseButtonProps> = forwardRef(({ block, children, lo
     };
     
     return (
-        <Button as={Fragment}>
+        <Button type={type} as={Fragment}>
             {
                 (({ active, disabled, focus, hover }) => (
                     <button
