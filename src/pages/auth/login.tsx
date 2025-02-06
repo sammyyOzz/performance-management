@@ -29,7 +29,7 @@ export const LoginPage = () => {
             <form onSubmit={handleSubmit} className="flex flex-col gap-8 w-full">
                 <div className="flex flex-col gap-7">
                     <BaseInput label="Email Address" type="email" placeholder="Enter email" iconRight={riMailLine} {...register("email")} readOnly={isPending} />
-                    <BasePasswordInput label="Password" type="password" placeholder="Enter password" {...register("password")} readOnly={isPending} showPassword />
+                    <BasePasswordInput label="Password" placeholder="Enter password" {...register("password")} readOnly={isPending} showPassword />
                 </div>
                 <div className="grid gap-2">
                     <BaseButton type="submit" size="small" theme="primary" variant="filled" loading={isPending} disabled={isPending || !isValid} block>Login</BaseButton>
