@@ -1,6 +1,7 @@
 export * from "./Badge"
 export * from "./Breadcrumb"
 export * from "./Button"
+export * from "./CheckBox"
 export * from "./Input"
 export * from "./Pagination"
 export * from "./RenderIf"

@@ -1,14 +1,16 @@
 import riMailLine from "@iconify-icons/ri/mail-line"
-import { Link, useNavigate } from "react-router"
 import { loginSchema } from "@/validations/auth"
 import { useLogin } from "@/services/hooks/mutations"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
+import { Link, useNavigate, useSearchParams } from "react-router"
 import { BaseButton, BaseInput, BasePasswordInput } from "@/components/core"
 
 export const LoginPage = () => {
     const navigate = useNavigate()
+    const [searchParams] = useSearchParams()
     const { mutate, isPending } = useLogin(() => {
-        navigate("/dashboard")
+        const prevRoute = searchParams.get("prevRoute")
+        navigate(prevRoute || "/dashboard")
     })
     const { handleSubmit, isValid, register } = useFormikWrapper({
         initialValues: {
