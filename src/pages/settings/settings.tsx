@@ -8,7 +8,7 @@ import { Folder, Layer, Profile2User, SecurityUser, UserSquare } from "iconsax-r
 
 const accountRoutes = [
     { name: "Profile", path: "/settings/departments", icon: UserSquare },
-    { name: "Security and Privacy", path: "/settings/divisions", icon: SecurityUser },
+    { name: "Security and Privacy", path: "/settings/security", icon: SecurityUser },
     { name: "Tasks and KRAs", path: "/settings/branches", icon: Folder },
 ]
 

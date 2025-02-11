@@ -1,4 +1,5 @@
 export * from "./roles-and-permissions"
 export * from "./roles-and-permissions/roles"
 export * from "./roles-and-permissions/users"
+export * from "./security"
 export * from "./settings"

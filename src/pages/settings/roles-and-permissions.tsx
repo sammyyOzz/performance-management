@@ -2,9 +2,10 @@ import { cn } from "@/lib/utils"
 import { Add } from "iconsax-react"
 import { motion } from "motion/react"
 import useMeasure from "react-use-measure"
-import { Fragment, useEffect } from "react"
+import { Fragment, useEffect, useState } from "react"
 import { BaseButton } from "@/components/core"
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router"
+import { AddUser } from "@/components/page/settings"
 
 const rolesAndPermissionsRoutes = [
     { name: "Users", path: "/settings/roles-and-permissions/users" },
@@ -15,6 +16,7 @@ export const RolesAndPermissionsPage = () => {
     const location = useLocation()
     const navigate = useNavigate()
     const [ref, bounds] = useMeasure()
+    const [openAddUser, setOpenAddUser] = useState(false)
     
     useEffect(() => {
         if (location.pathname === "/settings/roles-and-permissions") {
@@ -29,7 +31,7 @@ export const RolesAndPermissionsPage = () => {
                         <h1 className="font-semibold text-xl text-black">Team Members</h1>
                         <p className="font-normal text-xs text-[#727A86]">Invite and manage team members in your organization</p>
                     </div>
-                    <BaseButton size="small" theme="primary" variant="filled">
+                    <BaseButton type="button" size="small" theme="primary" variant="filled" onClick={() => setOpenAddUser(true)}>
                         Add User
                         <Add size="20" />
                     </BaseButton>
@@ -58,6 +60,7 @@ export const RolesAndPermissionsPage = () => {
                     </div>
                 </motion.div>
             </div>
+            <AddUser isOpen={openAddUser} close={() => setOpenAddUser(false)} />
         </section>
     )
 }

@@ -3,7 +3,7 @@ import { Icon } from "@iconify-icon/react"
 import riArrowDownSLine from "@iconify-icons/ri/arrow-down-s-line"
 import { AnimatePresence, easeOut, motion } from "motion/react"
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/react"
-import { BaseCheckbox } from "@/components/core"
+import { BaseButton, BaseCheckbox } from "@/components/core"
 
 interface RolesDisclosureProps {
     role: {
@@ -17,7 +17,7 @@ interface RolesDisclosureProps {
 
 function RolesDisclosure({ role }: RolesDisclosureProps) {
     return (
-        <Disclosure as="div" className="w-full">
+        <Disclosure defaultOpen as="div" className="w-full">
             {({ open }) => (
                 <>
                 <DisclosureButton className="flex items-center gap-1.5 w-full bg-[#F9F9F9] rounded-xl py-3.5 px-3 font-medium text-sm text-grey-40">
@@ -112,18 +112,27 @@ export const RolesPage = () => {
         },
     ]
     return (
-        <div className="flex flex-col gap-3.5">
-            <div className="bg-[#F0F1F4] rounded-lg grid grid-cols-4">
-                <div className="text-sm text-grey-40 py-2 px-3">Actions</div>
-                <div className="text-sm text-grey-40 py-2 px-3">Team Member</div>
-                <div className="text-sm text-grey-40 py-2 px-3">Manager</div>
-                <div className="text-sm text-grey-40 py-2 px-3">Admin</div>
+        <Fragment>
+            <div className="flex items-center justify-between">
+                <div className="grid">
+                    <h4 className="text-xl font-semibold text-gray-900">Team access</h4>
+                    <p className="text-xs text-[#727A86]">Control the actions assigned to each role.</p>
+                </div>
+                <BaseButton size="small" theme="primary" variant="filled">Save Changes</BaseButton>
             </div>
-            {
-                roles.map((role, index) =>
-                    <RolesDisclosure role={role} key={index} />
-                )
-            }
-        </div>
+            <div className="flex flex-col gap-3.5">
+                <div className="bg-[#F0F1F4] rounded-lg grid grid-cols-4">
+                    <div className="text-sm text-grey-40 py-2 px-3">Actions</div>
+                    <div className="text-sm text-grey-40 py-2 px-3">Team Member</div>
+                    <div className="text-sm text-grey-40 py-2 px-3">Manager</div>
+                    <div className="text-sm text-grey-40 py-2 px-3">Admin</div>
+                </div>
+                {
+                    roles.map((role, index) =>
+                        <RolesDisclosure role={role} key={index} />
+                    )
+                }
+            </div>
+        </Fragment>
     )
 }

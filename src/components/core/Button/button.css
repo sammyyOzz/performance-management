@@ -19,19 +19,19 @@
 }
 
 .button-primary--filled {
-  @apply bg-green-primary-40 text-white-10;
+  @apply bg-green-primary-40 text-white-10 border border-transparent;
 }
 
 .button-primary--filled-hover {
-  @apply bg-green-primary-50 text-white-10;
+  @apply bg-green-primary-50 text-white-10 border border-transparent;
 }
 
 .button-primary--filled-focus {
-  @apply bg-green-primary-50 text-white-10;
+  @apply bg-green-primary-50 text-white-10 border border-transparent;
 }
 
 .button-primary--filled-disabled {
-  @apply bg-green-primary-30 text-white-10 cursor-not-allowed;
+  @apply bg-green-primary-30 text-white-10 cursor-not-allowed border border-transparent;
 }
 
 .button-primary--outlined {
@@ -51,42 +51,54 @@
 }
 
 .button-primary--ghost {
-  @apply bg-transparent text-green-primary-40;
+  @apply bg-transparent text-green-primary-40 border border-transparent;
 }
 
 .button-primary--ghost-hover {
-  @apply bg-transparent text-green-primary-50;
+  @apply bg-transparent text-green-primary-50 border border-transparent;
 }
 
 .button-primary--ghost-focus {
-  @apply bg-transparent text-green-primary-50;
+  @apply bg-transparent text-green-primary-50 border border-transparent;
 }
 
 .button-primary--ghost-disabled {
-  @apply bg-green-primary-30 text-white-10 cursor-not-allowed;
+  @apply bg-green-primary-30 text-white-10 cursor-not-allowed border border-transparent;
 }
 
 .button-secondary--filled {
-  @apply bg-green-secondary-40 text-white-10;
+  @apply bg-green-secondary-40 text-white-10 border border-transparent;
 }
 
 .button-secondary--filled-hover {
-  @apply bg-green-secondary-50 text-white-10;
+  @apply bg-green-secondary-50 text-white-10 border border-transparent;
 }
 
 .button-secondary--filled-disabled {
-  @apply bg-green-secondary-30 text-white-10 cursor-not-allowed;
+  @apply bg-green-secondary-30 text-white-10 cursor-not-allowed border border-transparent;
 }
 
 .button-danger--filled {
-  @apply bg-red-40 text-white-10;
+  @apply bg-red-40 text-white-10 border border-transparent;
 }
 
 .button-danger--filled-hover {
-  @apply bg-red-50 text-white-10;
+  @apply bg-red-50 text-white-10 border border-transparent;
 }
 
 .button-danger--filled-disabled {
+  @apply bg-red-30 text-white-10 cursor-not-allowed border border-transparent;
+}
+
+.button-danger--outlined {
+  @apply bg-white-10 border border-red-40 text-red-40;
+}
+
+.button-danger--outlined-hover {
+  @apply border border-red-50 text-red-50 bg-white-10;
+}
+
+.button-danger--outlined-disabled {
   @apply bg-red-30 text-white-10 cursor-not-allowed;
 }
 

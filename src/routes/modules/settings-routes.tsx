@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router";
-import { RolesAndPermissionsPage, RolesPage, SettingsPage, UsersPage } from "@/pages/settings";
+import { RolesAndPermissionsPage, RolesPage, SecurityPage, SettingsPage, UsersPage } from "@/pages/settings";
 
 const SettingsRoutes = () => {
     return (
@@ -9,7 +9,7 @@ const SettingsRoutes = () => {
                     <Route path="users" element={<UsersPage />} />
                     <Route path="roles" element={<RolesPage />} />
                 </Route>
-                <Route path="divisions" element={<div>divisions</div>} />
+                <Route path="security" element={<SecurityPage />} />
                 <Route path="branches" element={<div>branches</div>} />
                 <Route path="departments" element={<div>sections</div>} />
                 <Route path="officers" element={<div>officers</div>} />
