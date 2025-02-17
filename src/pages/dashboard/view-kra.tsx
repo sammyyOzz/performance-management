@@ -4,7 +4,7 @@ import { Icon } from "@iconify-icon/react"
 import riPencilLine from "@iconify-icons/ri/pencil-line"
 import { NavLink, Outlet } from "react-router"
 import riDeleteBin6Line from "@iconify-icons/ri/delete-bin-6-line"
-import { BaseButton, Breadcrumb } from "@/components/core"
+import { Badge, BaseButton, Breadcrumb } from "@/components/core"
 import { DeleteKraDetail, EditKraDetail } from "@/components/page/dashboard"
 
 export const ViewDashboardKraPage = () => {
@@ -60,6 +60,9 @@ export const ViewDashboardKraPage = () => {
                     </div>
                 </div>
                 <div className="flex flex-col gap-6">
+                    <div className="flex items-center gap-1">
+                        Status: <Badge status="pending" label="Active" size="medium" />
+                    </div>
                     <div className="flex items-center w-full border-b border-b-[#DFE2E7]">
                     {
                         kraRoutes.map((route) =>

@@ -1,5 +1,17 @@
 .badge {
-  @apply rounded-md p-1 flex items-center gap-1 w-fit;
+  @apply rounded-md flex items-center gap-1 w-fit;
+}
+
+.badge-small {
+  @apply p-1;
+}
+
+.badge-medium {
+  @apply p-2;
+}
+
+.badge-large {
+  @apply p-3;
 }
 
 .badge-completed {

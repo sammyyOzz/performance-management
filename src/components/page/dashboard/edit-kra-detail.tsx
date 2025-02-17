@@ -5,7 +5,7 @@ import { Icon } from "@iconify-icon/react"
 import { Button } from "@headlessui/react"
 import riCloseFill from "@iconify-icons/ri/close-fill"
 import riCalendar2Line from "@iconify-icons/ri/calendar-2-line"
-import { BaseButton, BaseInput, TextArea } from "@/components/core"
+import { BaseButton, BaseInput, BaseSelectInput, TextArea } from "@/components/core"
 
 interface EditKraDetailProps {
     isOpen: boolean;
@@ -59,6 +59,7 @@ export const EditKraDetail: FC<EditKraDetailProps> = ({ isOpen, close }) => {
                                     <BaseInput label="Budget Released" type="text" />
                                     <BaseInput label="Donor Funding" type="text" />
                                     <BaseInput label="Other Sources" type="text" />
+                                    <BaseSelectInput label="Status" options={[{ label: "Active", value: "active" }]} />
                                     <BaseInput label="KRA Weight" type="text" />
                                     <div className="grid grid-cols-2 content-start gap-4">
                                         <div className="grid">
