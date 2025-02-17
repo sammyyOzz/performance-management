@@ -1,0 +1,21 @@
+@import "../../../forms.css";
+
+.input--label {
+  @apply text-grey-40 font-normal text-sm !important;
+}
+
+.input--error {
+  @apply text-red-50 font-normal text-sm !important;
+}
+
+.input {
+  @apply rounded-md py-3 text-sm w-full block bg-white-10 hover:bg-gray-100 text-gray-900 placeholder:text-gray-400 caret-gray-900 focus:outline-none focus:outline-0 transition-all duration-500 ease-out !important;
+}
+
+.input--border {
+  @apply border border-grey-30 hover:border-grey-40 disabled:hover:border-gray-100 focus:border-green-primary-40 transition-all duration-500 ease-out !important;
+}
+
+.input--border-error {
+  @apply border border-red-40 transition-all duration-500 ease-out !important;
+}

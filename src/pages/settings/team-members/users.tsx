@@ -4,9 +4,9 @@ import { Icon } from "@iconify-icon/react"
 import riMore2Fill from "@iconify-icons/ri/more-2-fill"
 import { Fragment, useCallback, useState } from "react"
 import { Badge, BaseSearch, Table } from "@/components/core"
+import { DeleteUser, ViewUserProfile } from "@/components/page/settings"
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react"
 import { getPaginationParams, updateQueryParams } from "@/hooks/usePaginationParams"
-import { ViewUserProfile } from "@/components/page/settings"
 
 export const UsersPage = () => {
     const location = useLocation()
@@ -18,6 +18,7 @@ export const UsersPage = () => {
 
     const [toggleModals, setToggleModals] = useState({
         openViewUserProfile: false,
+        openDeleteUser: false
     })
     
     const toggleViewUserProfile = useCallback(() => {
@@ -26,6 +27,13 @@ export const UsersPage = () => {
         openViewUserProfile: !toggleModals.openViewUserProfile,
         }))
     },[toggleModals.openViewUserProfile])
+    
+    const toggleOpenDeleteUser = useCallback(() => {
+        setToggleModals((prev) => ({
+        ...prev,
+        openDeleteUser: !toggleModals.openDeleteUser,
+        }))
+    },[toggleModals.openDeleteUser])
 
     const columns = [
         {
@@ -106,7 +114,7 @@ export const UsersPage = () => {
                                 </button>
                             </MenuItem>
                             <MenuItem>
-                                <button type="button" className="group flex w-full items-center text-red-40 gap-2 rounded-lg py-1.5 px-3">
+                                <button type="button" className="group flex w-full items-center text-red-40 gap-2 rounded-lg py-1.5 px-3" onClick={() => toggleOpenDeleteUser()}>
                                     <Trash size="16" color="#D42620"/>
                                     Remove User
                                 </button>
@@ -149,6 +157,7 @@ export const UsersPage = () => {
                     emptyStateText="We couldn't find any user on the system."
                 />
             </div>
+            <DeleteUser isOpen={toggleModals.openDeleteUser} close={() => toggleOpenDeleteUser()} />
             <ViewUserProfile isOpen={toggleModals.openViewUserProfile} close={() => toggleViewUserProfile()} />
         </Fragment>
     )

@@ -8,8 +8,8 @@ import { NavLink, Outlet, useLocation, useNavigate } from "react-router"
 import { AddUser } from "@/components/page/settings"
 
 const rolesAndPermissionsRoutes = [
-    { name: "Users", path: "/settings/roles-and-permissions/users" },
-    { name: "Roles", path: "/settings/roles-and-permissions/roles" },
+    { name: "Users", path: "/settings/team-members/users" },
+    { name: "Roles", path: "/settings/team-members/roles" },
 ]
 
 export const RolesAndPermissionsPage = () => {
@@ -19,8 +19,8 @@ export const RolesAndPermissionsPage = () => {
     const [openAddUser, setOpenAddUser] = useState(false)
     
     useEffect(() => {
-        if (location.pathname === "/settings/roles-and-permissions") {
-            navigate("/settings/roles-and-permissions/users")
+        if (location.pathname === "/settings/team-members") {
+            navigate("/settings/team-members/users")
         }
     },[location, location.pathname, navigate])
     return (
@@ -47,7 +47,7 @@ export const RolesAndPermissionsPage = () => {
                                                 <span className={cn(isActive ? "text-green-primary-40" : "text-[#727A86]", "font-medium text-sm")}>{route.name}</span>
                                                     {
                                                         isActive ? (
-                                                            <motion.div layoutId="roles-and-permissions-underline" id="roles-and-permissions-underline" className="inset-x-0 bg-green-primary-40 h-px absolute -bottom-px" />
+                                                            <motion.div layoutId="team-members-underline" id="team-members-underline" className="inset-x-0 bg-green-primary-40 h-px absolute -bottom-px" />
                                                         ) : null
                                                     }
                                             </Fragment>

@@ -22,8 +22,8 @@ export const SecurityPage = () => {
                         <p className="font-normal text-xs text-[#727A86]">Ensure your account is secured and no one has access to it</p>
                     </div>
                     <hr className="border-[#DFE2E7]" />
-                    <div className="grid grid-cols-3 gap-14">
-                        <div className="flex flex-col gap-5">
+                    <div className="flex w-full gap-24 max-w-3xl">
+                        <div className="flex flex-1 flex-col gap-5">
                             <div className="grid gap-1">
                                 <h2 className="font-medium text-sm text-black">Password</h2>
                                 <p className="font-normal text-xs text-[#727A86]">Change your password for security.</p>
@@ -32,19 +32,19 @@ export const SecurityPage = () => {
                                 Save Changes
                             </BaseButton>
                         </div>
-                        <div className="flex flex-col gap-5">
+                        <div className="flex flex-col w-full max-w-96 gap-5">
                             <BasePasswordInput label="Old Password" placeholder="Enter old password" showPassword />
                             <BasePasswordInput label="New Password" placeholder="Enter new password" showPassword />
                             <BasePasswordInput label="Confirm Password" placeholder="Confirm new password" showPassword />
                         </div>
                     </div>
                     <hr className="border-[#DFE2E7]" />
-                    <div className="grid grid-cols-3 gap-14">
-                        <div className="grid gap-1">
+                    <div className="flex w-full gap-24 max-w-3xl">
+                        <div className="flex flex-1 flex-col gap-1">
                             <h3 className="font-medium text-sm text-black">Account Security</h3>
                             <p className="font-normal text-xs text-[#727A86]">Manage account security</p>
                         </div>
-                        <div className="flex items-center gap-8">
+                        <div className="flex items-center w-full max-w-96 gap-8">
                             <BaseButton type="button" size="small" theme="danger" variant="outlined" onClick={() => logout()} block>
                                 Log out
                                 <Logout size="16" />

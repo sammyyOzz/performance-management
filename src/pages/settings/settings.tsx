@@ -4,17 +4,16 @@ import { Fragment, useEffect } from "react"
 import riArrowRightSLine from "@iconify-icons/ri/arrow-right-s-line"
 import { Icon } from "@iconify-icon/react/dist/iconify.mjs"
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router"
-import { Folder, Layer, Profile2User, SecurityUser, UserSquare } from "iconsax-react"
+import { Buildings2, Profile2User, SecurityUser, UserSquare } from "iconsax-react"
 
 const accountRoutes = [
-    { name: "Profile", path: "/settings/departments", icon: UserSquare },
+    { name: "Profile", path: "/settings/profile", icon: UserSquare },
     { name: "Security and Privacy", path: "/settings/security", icon: SecurityUser },
-    { name: "Tasks and KRAs", path: "/settings/branches", icon: Folder },
 ]
 
 const orgRoutes = [
-    { name: "Roles and Permission", path: "/settings/roles-and-permissions", icon: Layer },
-    { name: "Employee Information", path: "/settings/roles-and-permissions/employee", icon: Profile2User },
+    { name: "Team members", path: "/settings/team-members", icon: Profile2User },
+    { name: "Departments", path: "/settings/departments", icon: Buildings2 },
 ]
 
 export const SettingsPage = () => {
@@ -23,7 +22,7 @@ export const SettingsPage = () => {
     
     useEffect(() => {
         if (location.pathname === "/settings") {
-            navigate("/settings/departments")
+            navigate("/settings/profile")
         }
     },[location, location.pathname, navigate])
     return (
