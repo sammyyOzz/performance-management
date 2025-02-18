@@ -1,21 +1,25 @@
-import { Fragment, useCallback, useState } from "react"
+import { Fragment, useCallback, useEffect, useState } from "react"
 import { motion } from "motion/react"
 import { Icon } from "@iconify-icon/react"
 import riPencilLine from "@iconify-icons/ri/pencil-line"
-import { NavLink, Outlet } from "react-router"
+import { NavLink, Outlet, useLocation, useNavigate, useParams } from "react-router"
 import riDeleteBin6Line from "@iconify-icons/ri/delete-bin-6-line"
 import { Badge, BaseButton, Breadcrumb } from "@/components/core"
 import { DeleteKraDetail, EditKraDetail } from "@/components/page/dashboard"
 
 export const ViewDashboardKraPage = () => {
+    const { id } = useParams()
+    const location = useLocation()
+    const navigate = useNavigate()
+
     const [toggleModals, setToggleModals] = useState({
         openDeleteKraDetail: false,
         openEditKraDetail: false
     })
 
     const kraRoutes = [
-        { name: "Overview", path: "/dashboard/kra/1" },
-        { name: "Responsibility", path: "/dashboard/kra/1/responsibility" },
+        { name: "Overview", path: `/dashboard/kra/${id}/overview` },
+        { name: "Responsibility", path: `/dashboard/kra/${id}/responsibility` },
     ]
     
     const breadcrumbs = [
@@ -37,6 +41,12 @@ export const ViewDashboardKraPage = () => {
         openEditKraDetail: !toggleModals.openEditKraDetail,
       }))
     },[toggleModals.openEditKraDetail])
+    
+    useEffect(() => {
+        if (location.pathname === `/dashboard/kra/${id}`) {
+            navigate(`/dashboard/kra/${id}/overview`, { replace: true})
+        }
+    },[id, location.pathname, navigate])
     return (
         <section className="flex py-9 px-5 md:px-8 lg:px-10 xl:px-12 2xl:px-0 page-height overflow-y-scroll">
             <div className="flex flex-col flex-1 gap-5 max-w-screen-2xl mx-auto">

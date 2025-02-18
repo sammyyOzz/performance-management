@@ -1,1 +1,5 @@
+export * from "./departmental"
+export * from "./departmental/overview"
+export * from "./departmental/sub-initiative"
+export * from "./departmental/view-sub-initiative"
 export * from "./key-result-areas"

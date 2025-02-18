@@ -118,7 +118,7 @@ export const DepartmentsPage = () => {
                 <div className="flex items-center justify-between p-4 bg-white-10 border border-[#DFE2E7] rounded-xl">
                     <div className="grid gap-1">
                         <h1 className="font-semibold text-xl text-black">Departments</h1>
-                        <p className="font-normal text-xs text-[#727A86]">Invite and manage team members in your organization</p>
+                        <p className="font-normal text-xs text-[#727A86]">Create and manage all the departments in your organisation</p>
                     </div>
                     <BaseButton type="button" size="small" theme="primary" variant="filled" onClick={() => setOpenAddUser(true)}>
                         Add Department

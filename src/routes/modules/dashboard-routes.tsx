@@ -8,7 +8,7 @@ const DashboardRoutes = () => {
       <Route path="kra" element={<KraPage />} />
       <Route path="kra/create" element={<CreateDashboardKraPage />} />
       <Route path="kra/:id" element={<ViewDashboardKraPage />}>
-        <Route index element={<KraOverviewPage />} />
+        <Route path="overview" element={<KraOverviewPage />} />
         <Route path="responsibility" element={<KraResponsibilityPage />} />
       </Route>
     </Routes>
