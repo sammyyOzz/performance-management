@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router";
-import { DepartmentalKRAPage, DepartmentalOverviewPage, DepartmentalSubInitiativePage, KeyResultAreasPage, ViewDepartmentSubInitiativePage } from "@/pages/key-result-areas";
+import { BranchesKRAPage, DepartmentalKRAPage, DepartmentalOverviewPage, DepartmentalSubInitiativePage, DivisionKRAPage, KeyResultAreasPage, SectionsKRAPage, ViewDepartmentSubInitiativePage } from "@/pages/key-result-areas";
 
 const KRAsRoutes = () => {
     return (
@@ -9,9 +9,9 @@ const KRAsRoutes = () => {
                     <Route path="overview" element={<DepartmentalOverviewPage />} />
                     <Route path="sub-initiative" element={<DepartmentalSubInitiativePage />} />
                 </Route>
-                <Route path="divisions" element={<div>divisions</div>} />
-                <Route path="branches" element={<div>branches</div>} />
-                <Route path="sections" element={<div>sections</div>} />
+                <Route path="divisions" element={<DivisionKRAPage />} />
+                <Route path="branches" element={<BranchesKRAPage />} />
+                <Route path="sections" element={<SectionsKRAPage />} />
                 <Route path="officers" element={<div>officers</div>} />
             </Route>
             <Route path="departments/sub-initiative/:id" element={<ViewDepartmentSubInitiativePage />} />
