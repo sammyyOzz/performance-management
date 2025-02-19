@@ -72,7 +72,7 @@ export const EditKraDetail: FC<EditKraDetailProps> = ({ isOpen, close }) => {
                                 </div>
 
                             </div>
-                            <BaseButton type="submit" size="small" theme="primary" variant="filled" block>Create sub-initiative</BaseButton>
+                            <BaseButton type="submit" size="small" theme="primary" variant="filled" block>Save Changes</BaseButton>
                         </form>
                     </div>
                 </Drawer.Content>

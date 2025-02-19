@@ -22,7 +22,7 @@ export const ViewUserProfile: FC<ViewUserProfileProps> = ({ isOpen, close }) => 
                 >
                     <div className="bg-white-10 h-full w-full grow p-6 flex flex-col rounded-bl-lg">
                         <div className="flex flex-col gap-14 h-full w-full max-w-2xl mx-auto">
-                            <div className="flex flex-col gap-8 overflow-y-scroll scrollbar-hide" style={{ height: "calc(100dvh - 124px)"}}>
+                            <div className="flex flex-col gap-8 overflow-y-scroll scrollbar-hide">
                                 <div className="flex items-center justify-between gap-2">
                                     <Drawer.Title className="font-semibold text-2xl text-gray-900">Aijay Solomon</Drawer.Title>
                                     <Button type="button" className="p-3" onClick={() => close()}>

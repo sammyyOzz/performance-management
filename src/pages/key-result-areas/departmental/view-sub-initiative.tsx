@@ -1,13 +1,14 @@
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { cn } from "@/lib/utils"
 import { motion } from "motion/react"
 import { useLocation } from "react-router"
 import { Icon } from "@iconify-icon/react"
 import riMore2Fill from "@iconify-icons/ri/more-2-fill"
-import { Edit2, Eye, InfoCircle, More2, Trash } from "iconsax-react"
+import { Add, Edit2, Eye, InfoCircle, More2, Trash } from "iconsax-react"
 import { Badge, BaseSearch, Breadcrumb, Table } from "@/components/core"
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react"
+import { Button, Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react"
 import { getPaginationParams, updateQueryParams } from "@/hooks/usePaginationParams"
+import { CreateSubInitiative, DeleteSubInitiative, EditSubInitiative, ViewSubInitiative } from "@/components/page/key-result-areas"
 
 export const ViewDepartmentSubInitiativePage = () => {
     const location = useLocation()
@@ -16,6 +17,42 @@ export const ViewDepartmentSubInitiativePage = () => {
     const [kraFilters, setKraFilters] = useState(
         getPaginationParams(searchParams, { page: 1 })
     )
+    
+    const [toggleModals, setToggleModals] = useState({
+        openCreateSubInitiative: false,
+        openDeleteSubInitiative: false,
+        openEditSubInitiative: false,
+        openViewSubInitiative: false,
+    })
+    
+    const toggleCreateSubInitiative = useCallback(() => {
+        setToggleModals((prev) => ({
+        ...prev,
+        openCreateSubInitiative: !toggleModals.openCreateSubInitiative,
+        }))
+    }, [toggleModals.openCreateSubInitiative])
+    
+    const toggleDeleteSubInitiative = useCallback(() => {
+        setToggleModals((prev) => ({
+        ...prev,
+        openDeleteSubInitiative: !toggleModals.openDeleteSubInitiative,
+        }))
+    }, [toggleModals.openDeleteSubInitiative])
+    
+    const toggleEditSubInitiative = useCallback(() => {
+        setToggleModals((prev) => ({
+        ...prev,
+        openEditSubInitiative: !toggleModals.openEditSubInitiative,
+        }))
+    }, [toggleModals.openEditSubInitiative])
+    
+    const toggleViewSubInitiative = useCallback(() => {
+        setToggleModals((prev) => ({
+        ...prev,
+        openViewSubInitiative: !toggleModals.openViewSubInitiative,
+        }))
+    }, [toggleModals.openViewSubInitiative])
+    
     const tabs = ["all", "active", "done"]
     const [activeTab, setActiveTab] = useState(tabs[0])
     const cards = [
@@ -103,19 +140,19 @@ export const ViewDepartmentSubInitiativePage = () => {
                             className="w-28 origin-top-right rounded-lg shadow-lg bg-white-10 p-2 space-y-2 text-xs transition duration-100 ease-out [--anchor-gap:var(--spacing-2)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
                         >
                             <MenuItem>
-                                <button type="button" className="group flex w-full items-center text-green-primary-40 gap-2 rounded-lg py-1.5 px-3">
+                                <button type="button" className="group flex w-full items-center text-green-primary-40 gap-2 rounded-lg py-1.5 px-3" onClick={() => toggleViewSubInitiative()}>
                                     <Eye size="16" color="#003A2B"/>
                                     View
                                 </button>
                             </MenuItem>
                             <MenuItem>
-                                <button type="button" className="group flex w-full items-center text-green-primary-40 gap-2 rounded-lg py-1.5 px-3">
+                                <button type="button" className="group flex w-full items-center text-green-primary-40 gap-2 rounded-lg py-1.5 px-3" onClick={() => toggleEditSubInitiative()}>
                                     <Edit2 size="16" color="#003A2B"/>
                                     Edit
                                 </button>
                             </MenuItem>
                             <MenuItem>
-                                <button type="button" className="group flex w-full items-center text-red-40 gap-2 rounded-lg py-1.5 px-3">
+                                <button type="button" className="group flex w-full items-center text-red-40 gap-2 rounded-lg py-1.5 px-3" onClick={() => toggleDeleteSubInitiative()}>
                                     <Trash size="16" color="#D42620"/>
                                     Delete
                                 </button>
@@ -188,8 +225,14 @@ export const ViewDepartmentSubInitiativePage = () => {
                                 )
                             }
                         </div>
-                        <div className="w-96">
+                        <div className="flex items-center gap-3 max-w-md w-full">
                             <BaseSearch type="text" placeholder="Search..." />
+                            <Button className="button button-tiny button-primary--filled-focus" onClick={() => toggleCreateSubInitiative()}>
+                                <div className="flex items-center gap-2.5">
+                                    <span className="whitespace-nowrap">Add sub-initiative</span>
+                                    <Add size="20" />
+                                </div>
+                            </Button>
                         </div>
                     </div>
                     <Table
@@ -203,6 +246,10 @@ export const ViewDepartmentSubInitiativePage = () => {
                     />
                 </div>
             </div>
+            <CreateSubInitiative isOpen={toggleModals.openCreateSubInitiative} close={() => toggleCreateSubInitiative()} />
+            <DeleteSubInitiative isOpen={toggleModals.openDeleteSubInitiative} close={() => toggleDeleteSubInitiative()} />
+            <EditSubInitiative isOpen={toggleModals.openEditSubInitiative} close={() => toggleEditSubInitiative()} />
+            <ViewSubInitiative isOpen={toggleModals.openViewSubInitiative} close={() => toggleViewSubInitiative()} />
         </section>
     )
 }
