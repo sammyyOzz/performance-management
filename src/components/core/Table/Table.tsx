@@ -125,7 +125,7 @@ export const Table: React.FC<TableProps> = ({
                         <RenderIf condition={header.column.getCanSort()}>
                           <Icon
                             icon="ph:caret-up-down-fill"
-                            className="text-neutral-40"
+                            className="text-[#98A2B3]"
                           />
                         </RenderIf>
                       </div>

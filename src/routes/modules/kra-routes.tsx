@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router";
-import { BranchesKRAPage, DepartmentalKRAPage, DepartmentalOverviewPage, DepartmentalSubInitiativePage, DivisionKRAPage, KeyResultAreasPage, OfficersKRAPage, SectionsKRAPage, ViewDepartmentSubInitiativePage } from "@/pages/key-result-areas";
+import { BranchesKRAPage, DepartmentalKRAPage, DepartmentalOverviewPage, DepartmentalSubInitiativePage, DivisionKRAPage, KeyResultAreasPage, OfficersKraDescriptionPage, OfficersKRAPage, SectionsKRAPage, ViewDepartmentSubInitiativePage } from "@/pages/key-result-areas";
 
 const KRAsRoutes = () => {
     return (
@@ -15,6 +15,7 @@ const KRAsRoutes = () => {
                 <Route path="officers" element={<OfficersKRAPage />} />
             </Route>
             <Route path="departments/sub-initiative/:id" element={<ViewDepartmentSubInitiativePage />} />
+            <Route path="officers/:id" element={<OfficersKraDescriptionPage />} />
         </Routes>
     );
 };
