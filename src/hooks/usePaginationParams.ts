@@ -21,11 +21,11 @@ export const getPaginationParams = (searchParams: URLSearchParams, defaultParams
   // Convert search params to an object
   const queryParams = Object.fromEntries(searchParams.entries());
 
-  // Apply default params for missing keys
-  return {
-    ...defaultParams,
-    ...queryParams,
-  };
+  // Only apply default values if the key does not exist in the URL
+  return Object.keys(defaultParams).reduce((acc, key) => {
+    acc[key] = queryParams[key] !== undefined ? queryParams[key] : defaultParams[key];
+    return acc;
+  }, {} as SearchParamsType);
 };
 
 export const updateQueryParams = (newParams: Record<string, string | number>) => {

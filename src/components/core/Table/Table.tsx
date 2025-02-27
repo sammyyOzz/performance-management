@@ -18,6 +18,9 @@ interface TableProps {
   config?: Partial<TableOptions<any>>
   totalCount?: number; // total count of table data
   emptyStateText?: string;
+  emptyStateTitle?: string;
+  emptyStateAction?: React.ReactNode;
+  emptyStateImage?: string;
   // eslint-disable-next-line no-unused-vars
   getData?: (page: number, rowsPerPage: number) => void; // handle pagination on page mount
   // eslint-disable-next-line no-unused-vars
@@ -35,6 +38,9 @@ export const Table: React.FC<TableProps> = ({
   getData,
   totalCount,
   emptyStateText = "",
+  emptyStateTitle = "",
+  emptyStateAction = <></>,
+  emptyStateImage = "",
   onPageChange,
   onClick,
   paginateData = true,
@@ -150,7 +156,7 @@ export const Table: React.FC<TableProps> = ({
                     key={row.id}
                     data-testid={row.id}
                     onClick={() => onClick?.(row)}
-                    className={cn("transition duration-500 ease-out hover:bg-gray-50", !onClick ? "cursor-default" : "cursor-pointer", row?.getIsSelected() ? "font-medium" : "font-normal")}
+                    className={cn(!onClick ? "cursor-default" : "cursor-pointer transition duration-500 ease-out hover:bg-gray-50", row?.getIsSelected() ? "font-medium" : "font-normal")}
                   >
                     {row.getVisibleCells().map((cell) => {
                       return (
@@ -181,7 +187,7 @@ export const Table: React.FC<TableProps> = ({
         </table>
         <RenderIf condition={data.length < 1 && !loading}>
             <div className="flex items-center justify-center">
-              <EmptyState emptyStateText={emptyStateText} />
+              <EmptyState emptyStateTitle={emptyStateTitle} emptyStateText={emptyStateText} emptyStateAction={emptyStateAction} emptyStateImage={emptyStateImage} />
             </div>
         </RenderIf>
       </div>

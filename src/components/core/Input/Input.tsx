@@ -37,11 +37,11 @@ interface InputProps extends AllHTMLAttributes<HTMLInputElement> {
   /**
    * Right icon to render
    */
-  iconRight?: IconifyIcon;
+  iconRight?: IconifyIcon | string;
   /**
    * Left icon to render
    */
-  iconLeft?: IconifyIcon;
+  iconLeft?: IconifyIcon | string;
   /**
    * Other unknown attributes
    */
@@ -68,19 +68,19 @@ export const BaseInput: React.FC<InputProps> = forwardRef(({ label, error, optio
                 </div>
             </RenderIf>
             <div className="input--inner">
-                <RenderIf condition={!!iconLeft}>
-                    <Icon icon={iconLeft as IconifyIcon} className="size-5 right-2.5 text-grey-30 peer-disabled:text-gray-300 ml-auto my-auto inset-0 absolute z-10" width={20} height={20} />
-                </RenderIf>
                 <Input as={Fragment}>
                     {
                         () =>
                             <input
                                 ref={ref}
-                                className={cn("input peer", iconLeft ? "pl-12" : "pl-4", iconRight ? "pr-12" : "pr-4", error ? "input--border-error" : "input--border", className)}
+                                className={cn("input peer", iconLeft ? "pl-9" : "pl-4", iconRight ? "pr-12" : "pr-4", error ? "input--border-error" : "input--border", className)}
                                 {...props}
                             />
                     }
                 </Input>
+                <RenderIf condition={!!iconLeft}>
+                    <Icon icon={iconLeft as IconifyIcon} className="size-5 left-2.5 text-grey-30 peer-disabled:text-gray-300 peer-focus:text-grey-40 transition-colors duration-500 ease-out mr-auto my-auto inset-0 absolute" width={20} height={20} />
+                </RenderIf>
                 <RenderIf condition={!!iconRight}>
                     <Icon icon={iconRight as IconifyIcon} className="size-5 right-4 text-grey-30 peer-disabled:text-gray-300 peer-focus:text-grey-40 transition-colors duration-500 ease-out ml-auto my-auto inset-0 absolute" width={20} height={20} />
                 </RenderIf>

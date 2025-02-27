@@ -1,26 +1,41 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { cn } from "@/lib/utils"
 import { motion } from "motion/react"
-import { ArrowDown2, ArrowRight2, Moneys, More2 } from "iconsax-react"
-import { Badge, BaseButton, BaseSearch, Breadcrumb, Table } from "@/components/core"
 import { Link, useLocation } from "react-router"
+import { useGetKRAs } from "@/services/hooks/queries"
+import { Loader } from "@/components/core/Button/Loader"
+import { ArrowDown2, ArrowRight2, Moneys, More2 } from "iconsax-react"
 import { getPaginationParams, updateQueryParams } from "@/hooks/usePaginationParams"
+import { Badge, BaseButton, BaseSearch, Breadcrumb, RenderIf, Table } from "@/components/core"
+import { SingleKraType } from "@/types/kra"
+import { formattedNumber } from "@/utils/textFormatter"
+import { useDebounce } from "@/hooks/useDebounce"
 
 export const KraPage = () => {
     const location = useLocation()
-    const [itemsPerPage] = useState(15)
+    const [itemsPerPage] = useState(10)
     const searchParams = new URLSearchParams(location.search)
-    const [kraFilters, setKraFilters] = useState(
-        getPaginationParams(searchParams, { page: 1 })
-    )
+    const initialFilter = searchParams.get("filter") || "";
+    const { value, onChangeHandler } = useDebounce(500, initialFilter, (debouncedValue) => {
+        setKraFilters((prev) => {
+            const updatedFilters = { ...prev, filter: debouncedValue };
+            updateQueryParams(updatedFilters); // Update the URL search params
+            return updatedFilters;
+        });
+    })
+    const defaultFilters = getPaginationParams(searchParams, { page: 1, filter: "" });
+    const [kraFilters, setKraFilters] = useState(defaultFilters)
+    const { data, isLoading } = useGetKRAs({ ...kraFilters })
     const tabs = ["all", "active", "done"]
     const [activeTab, setActiveTab] = useState(tabs[0])
-    const cards = [
-        { icon: <More2 size="20" color="#003A2B" />, label: "Total Weights", value: "10" },
-        { icon: <Moneys size="20" color="#003A2B"/>, label: "Total Budget Released", value: "₦0" },
-        { icon: <Moneys size="20" color="#003A2B"/>, label: "Total Donor Funding", value: "₦0" },
-        { icon: <Moneys size="20" color="#003A2B"/>, label: "Total Other Sources", value: "₦0" },
-    ]
+    const cards = useMemo(() => {
+        return [
+            { icon: <More2 size="20" color="#003A2B" />, label: "Total Weights", value: data?.total_weight || 0 },
+            { icon: <Moneys size="20" color="#003A2B"/>, label: "Total Budget Released", value: formattedNumber(data?.total_budget_released || 0, { maximumFractionDigits: 0 }) },
+            { icon: <Moneys size="20" color="#003A2B"/>, label: "Total Donor Funding", value: formattedNumber(data?.total_donor_funding || 0, { maximumFractionDigits: 0 }) },
+            { icon: <Moneys size="20" color="#003A2B"/>, label: "Total Other Sources", value: formattedNumber(data?.total_other_sources || 0, { maximumFractionDigits: 0 }) },
+        ]
+    },[data?.total_budget_released, data?.total_donor_funding, data?.total_other_sources, data?.total_weight])
     const breadcrumbs = [
         { label: "Dashboard", href: "/dashboard" },
         { label: "View KRAs", href: "/dashboard/kra" },
@@ -31,18 +46,20 @@ export const KraPage = () => {
             enableSorting: false,
             accessorKey: "objective",
             header: () => "Objective",
-            cell: () => {
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as SingleKraType
                 return (
-                    <span className="line-clamp-2">Optimization of Crude Oil and Gas reserves to 40 million barrels and 220tcf respectively</span>
+                    <span className="line-clamp-2">{item?.name}</span>
                 )
             }
         },
         {
             accessorKey: "weights",
             header: () => "Weights",
-            cell: () => {
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as SingleKraType
                 return (
-                    <span className="line-clamp-2">1</span>
+                    <span className="line-clamp-2">{item?.weight}</span>
                 )
             }
         },
@@ -50,9 +67,10 @@ export const KraPage = () => {
             enableSorting: false,
             accessorKey: "budget_allocation",
             header: () => "Budget Allocation",
-            cell: () => {
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as SingleKraType
                 return (
-                    <span className="line-clamp-2">₦0</span>
+                    <span className="line-clamp-2">{formattedNumber(item?.budget_allocation)}</span>
                 )
             }
         },
@@ -60,9 +78,10 @@ export const KraPage = () => {
             enableSorting: false,
             accessorKey: "budget_released",
             header: () => "Budget Released",
-            cell: () => {
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as SingleKraType
                 return (
-                    <span className="line-clamp-2">₦0</span>
+                    <span className="line-clamp-2">{formattedNumber(item?.budget_released)}</span>
                 )
             }
         },
@@ -70,9 +89,10 @@ export const KraPage = () => {
             enableSorting: false,
             accessorKey: "funding",
             header: () => "Donor Funding",
-            cell: () => {
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as SingleKraType
                 return (
-                    <span className="line-clamp-2">₦0</span>
+                    <span className="line-clamp-2">{formattedNumber(item?.donor_funding)}</span>
                 )
             }
         },
@@ -80,9 +100,10 @@ export const KraPage = () => {
             enableSorting: false,
             accessorKey: "other_sources",
             header: () => "Other Sources",
-            cell: () => {
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as SingleKraType
                 return (
-                    <span className="line-clamp-2">₦0</span>
+                    <span className="line-clamp-2">{formattedNumber(item?.other_sources)}</span>
                 )
             }
         },
@@ -100,9 +121,10 @@ export const KraPage = () => {
             enableSorting: false,
             accessorKey: "action",
             header: () => "Action",
-            cell: () => {
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as SingleKraType
                 return (
-                    <Link to="/dashboard/kra/1" className="button button-tiny button-primary--outlined">
+                    <Link to={`/dashboard/kra/${item?.id}`} className="button button-tiny button-primary--outlined">
                         View
                         <ArrowRight2 size="14" />
                     </Link>
@@ -118,8 +140,8 @@ export const KraPage = () => {
             updateQueryParams(updatedFilters); // Use the updated filters directly
             return updatedFilters;
         });
-
     };
+    
     return (
         <section className="flex py-9 px-5 md:px-8 lg:px-10 xl:px-12 2xl:px-0 page-height overflow-y-scroll">
             <div className="flex flex-col flex-1 gap-10 max-w-screen-2xl mx-auto">
@@ -170,18 +192,26 @@ export const KraPage = () => {
                             }
                         </div>
                         <div className="w-96">
-                            <BaseSearch type="text" placeholder="Search..." />
+                            <BaseSearch type="text" placeholder="Search..." defaultValue={value} onChange={onChangeHandler} />
                         </div>
                     </div>
-                    <Table
-                        columns={columns}
-                        data={[""]}
-                        perPage={itemsPerPage}
-                        page={Number(kraFilters.page)}
-                        onPageChange={handlePageChange}
-                        totalCount={30}
-                        emptyStateText="We couldn't find any kra on the system."
-                    />
+                    <RenderIf condition={!isLoading}>
+                        <Table
+                            columns={columns}
+                            data={data?.data ?? []}
+                            perPage={itemsPerPage}
+                            page={Number(kraFilters.page)}
+                            onPageChange={handlePageChange}
+                            totalCount={data?.total_items}
+                            emptyStateTitle="No Key Result Area"
+                            emptyStateImage="/empty-clipboard.svg"
+                            emptyStateAction={<Link to="/dashboard/kra/create" className="button button-tiny button-primary--filled-focus">Create a key result area</Link>}
+                            emptyStateText="Click “create a key result area” button to get started in adding your first KRA"
+                        />
+                    </RenderIf>
+                    <RenderIf condition={isLoading}>
+                        <div className="flex flex-col h-96 items-center justify-center"><Loader className="spinner size-6 text-green-primary-40" /></div>
+                    </RenderIf>
                 </div>
             </div>
         </section>

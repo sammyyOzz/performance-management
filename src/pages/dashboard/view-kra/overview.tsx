@@ -1,15 +1,28 @@
+import { useParams } from "react-router"
 import DatePicker from "react-datepicker"
 import riCalendar2Line from "@iconify-icons/ri/calendar-2-line"
 import { BaseInput, TextArea } from "@/components/core"
+import { useGetKRA } from "@/services/hooks/queries"
+import { useFormikWrapper } from "@/hooks/useFormikWrapper"
 
 export const KraOverviewPage = () => {
+    const { id } = useParams()
+    const { data } = useGetKRA(id as string)
+
+    const { register } = useFormikWrapper({
+        initialValues: {
+            ...data
+        },
+        enableReinitialize: true,
+        onSubmit: () => {}
+    })
     return (
         <div className="flex border border-[#DFE2E7] rounded-lg px-6 pt-3 pb-12">
             <div className="grid grid-cols-2 w-full gap-8 content-start">
-                <BaseInput label="Name" type="text" value="Optimization of Crude Oil and Gas reserves to 40 million barrels and 220tcf respectively" readOnly />
-                <BaseInput label="Budget Allocation" type="text" value="₦0" readOnly />
-                <BaseInput label="Weight" type="text" value="9" readOnly />
-                <BaseInput label="Budget Released" type="text" value="₦0" readOnly />
+                <BaseInput label="Name" type="text" {...register("name")} readOnly />
+                <BaseInput label="Budget Allocation" type="text" iconLeft="mdi:naira" {...register("budget_allocation")} readOnly />
+                <BaseInput label="Weight" type="text" {...register("weight")} readOnly />
+                <BaseInput label="Budget Released" type="text" iconLeft="mdi:naira" {...register("budget_released")} readOnly />
                 <div className="grid grid-cols-2 content-start gap-4">
                     <div className="grid">
                         <DatePicker
@@ -31,11 +44,11 @@ export const KraOverviewPage = () => {
                     </div>
                 </div>
                 
-                <BaseInput label="Donor Funding" type="text" value="₦0" readOnly />
+                <BaseInput label="Donor Funding" type="text" iconLeft="mdi:naira" {...register("donor_funding")} readOnly />
                 <div className="grid">
-                    <TextArea label="Description" rows={5} />
+                    <TextArea label="Description" rows={5} {...register("description")} readOnly />
                 </div>
-                <BaseInput label="Other Sources" type="text" value="₦0" readOnly />
+                <BaseInput label="Other Sources" type="text" iconLeft="mdi:naira" {...register("other_sources")} readOnly />
             </div>
         </div>
     )
