@@ -1,5 +1,5 @@
 .button {
-  @apply flex items-center justify-center gap-2 rounded-lg text-sm font-medium focus:outline-none w-fit transform transition-all duration-300 ease-out;
+  @apply flex items-center justify-center gap-2 rounded-lg text-sm font-medium focus:outline-none disabled:cursor-not-allowed w-fit transform transition-all duration-300 ease-out;
 }
 
 .button-tiny {

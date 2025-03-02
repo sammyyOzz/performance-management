@@ -98,8 +98,8 @@ export const ViewDashboardKraPage = () => {
                         <Outlet />
                     </div>
                 </div>
-                <DeleteKraDetail isOpen={toggleModals.openDeleteKraDetail} close={() => toggleDeleteKraDetail()} />
-                <EditKraDetail isOpen={toggleModals.openEditKraDetail} close={() => toggleEditKraDetail()} />
+                <DeleteKraDetail id={id as string} isOpen={toggleModals.openDeleteKraDetail} close={() => toggleDeleteKraDetail()} />
+                <EditKraDetail kra={data!} isOpen={toggleModals.openEditKraDetail} close={() => toggleEditKraDetail()} />
             </RenderIf>
             <RenderIf condition={isLoading}>
                 <div className="flex flex-col flex-1 gap-10 max-w-screen-2xl mx-auto items-center justify-center"><Loader className="spinner size-6 text-green-primary-40" /></div>

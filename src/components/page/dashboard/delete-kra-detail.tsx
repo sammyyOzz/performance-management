@@ -1,14 +1,22 @@
 import { FC } from "react"
 import { Trash } from "iconsax-react"
+import { useNavigate } from "react-router"
 import { BaseButton } from "@/components/core"
+import { useDeleteKra } from "@/services/hooks/mutations"
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react"
 
 interface DeleteKraDetailProps {
+    id: string;
     isOpen: boolean;
     close: () => void;
 }
 
-export const DeleteKraDetail: FC<DeleteKraDetailProps> = ({ isOpen, close }) => {
+export const DeleteKraDetail: FC<DeleteKraDetailProps> = ({ id, isOpen, close }) => {
+    const navigate = useNavigate()
+    const { mutate, isPending } = useDeleteKra(() => {
+        close()
+        navigate("/dashboard/kra")
+    })
     return (
         <Dialog open={isOpen} as="div" className="relative z-10 focus:outline-none" onClose={close}>
             <DialogBackdrop className="fixed inset-0 bg-black/10 duration-300 ease-out transition-all" style={{ backdropFilter: "blur(4px)" }} /> 
@@ -22,10 +30,10 @@ export const DeleteKraDetail: FC<DeleteKraDetailProps> = ({ isOpen, close }) => 
                             Are you sure you want to delete this Objective? This action cannot be undone
                         </p>
                         <div className="flex items-center gap-5 w-full">
-                            <BaseButton size="small" theme="primary" variant="outlined" onClick={() => close()} block>
+                            <BaseButton size="small" theme="primary" variant="outlined" disabled={isPending} onClick={() => close()} block>
                                 Cancel
                             </BaseButton>
-                            <BaseButton size="small" theme="danger" variant="filled" block>
+                            <BaseButton type="button" size="small" theme="danger" variant="filled" loading={isPending} disabled={isPending} onClick={() => mutate(id)} block>
                                 Delete
                             </BaseButton>
                         </div>

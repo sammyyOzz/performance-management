@@ -87,11 +87,12 @@ export const DashboardPage = () => {
                                     accessibilityLayer
                                     data={chartData}
                                     layout="vertical"
-                                    barSize={26}
-                                    barGap={8}
+                                    // barSize={26}
+                                    // barCategoryGap={80}
                                     margin={{
                                         left: -20
                                     }}
+                                    
                                 >
                                     <XAxis type="number" dataKey="weight" scale="linear" domain={[0, 10]} ticks={[1,2,3,4,5,6,7,8,9,10]} tickLine={false} axisLine={false} />
                                     <YAxis
