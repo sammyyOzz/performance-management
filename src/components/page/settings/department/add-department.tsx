@@ -6,7 +6,6 @@ import { Icon } from "@iconify-icon/react"
 import { Button } from "@headlessui/react"
 import riCloseFill from "@iconify-icons/ri/close-fill"
 import riCalendar2Line from "@iconify-icons/ri/calendar-2-line"
-import type { SingleKraType } from "@/types/kra"
 import { editKRASchema } from "@/validations/kra"
 import { AnimatePresence, motion } from "motion/react"
 import { useEditKra } from "@/services/hooks/mutations"
@@ -14,32 +13,27 @@ import { useFormikWrapper } from "@/hooks/useFormikWrapper"
 import { BaseButton, BaseInput, BaseSelectInput, TextArea } from "@/components/core"
 import { useGetDepartments } from "@/services/hooks/queries"
 
-interface EditKraDetailProps {
+interface AddDepartmentProps {
     isOpen: boolean;
     close: () => void;
-    kra: SingleKraType;
 }
 
-export const EditKraDetail: FC<EditKraDetailProps> = ({ isOpen, close, kra }) => {
-    const { mutate, isPending } = useEditKra(() => close())
+export const AddDepartment: FC<AddDepartmentProps> = ({ isOpen, close }) => {
+    const { isPending } = useEditKra(() => close())
     const { data } = useGetDepartments({})
     const { dirty, errors, handleSubmit, isValid, register, resetForm, setFieldValue, values } = useFormikWrapper({
         initialValues: {
-            budget_allocation: kra?.budget_allocation || 0,
-            budget_released: kra?.budget_released || 0,
-            description: kra?.description || "",
-            donor_funding: kra?.donor_funding || 0,
-            name: kra?.name || "",
-            other_sources: kra?.other_sources || 0,
-            responsibilities: kra?.responsibilities || [],
-            weight: kra?.weight || 0
+            budget_allocation: 0,
+            budget_released: 0,
+            description: "",
+            donor_funding: 0,
+            name: "",
+            other_sources: 0,
+            responsibilities: [],
+            weight: 0
         },
-        enableReinitialize: true,
         validationSchema: editKRASchema,
         onSubmit: () => {
-            const { responsibilities, ...rest } = values
-            const newResponsibilities = responsibilities.map((item) => ({ department_id: parseInt(item?.department_id as any), department_weight: item?.department_weight, department_name: item?.department_name  }))
-            mutate({ id: kra?.id, responsibilities: newResponsibilities, ...rest })
         },
     })
     const addResponsibility = () => {

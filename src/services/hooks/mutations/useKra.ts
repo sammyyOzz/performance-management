@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { errorToast, successToast } from "@/utils/createToast";
 import { createKRA, deleteKRA, editKRA } from "@/services/apis/kra";
-import { GET_KRAS } from "@/constants/queryKeys";
+import { GET_KRA } from "@/constants/queryKeys";
 
 export const useCreateKra = (fn?: () => void) => {
     return useMutation({
@@ -21,7 +21,7 @@ export const useEditKra = (fn?: () => void) => {
     return useMutation({
         mutationFn: editKRA,
         onSuccess: (response) => {
-            queryClient.invalidateQueries({ queryKey: [GET_KRAS] });
+            queryClient.invalidateQueries({ queryKey: [GET_KRA] });
             successToast({ param: null, msg: response?.message })
             fn?.()
         },

@@ -1,11 +1,11 @@
 import { useState } from "react"
-import { Icon } from "@iconify-icon/react"
 import { useLocation } from "react-router"
-import riMore2Fill from "@iconify-icons/ri/more-2-fill"
-import { BaseButton, Table } from "@/components/core"
-import { Add, Eye, Trash } from "iconsax-react"
-import { AddUser } from "@/components/page/settings"
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react"
+import { Add, ArrowRight2 } from "iconsax-react"
+import { Loader } from "@/components/core/Button/Loader"
+import { FetchedDepartmentType } from "@/types/department"
+import { AddDepartment } from "@/components/page/settings"
+import { useGetDepartments } from "@/services/hooks/queries"
+import { BaseButton, RenderIf, Table } from "@/components/core"
 import { getPaginationParams, updateQueryParams } from "@/hooks/usePaginationParams"
 
 export const DepartmentsPage = () => {
@@ -15,6 +15,7 @@ export const DepartmentsPage = () => {
     const [kraFilters, setKraFilters] = useState(
         getPaginationParams(searchParams, { page: 1 })
     )
+    const { data, isLoading } = useGetDepartments({})
     const [openAddUser, setOpenAddUser] = useState(false)
 
     const columns = [
@@ -22,9 +23,10 @@ export const DepartmentsPage = () => {
             enableSorting: false,
             accessorKey: "department_name",
             header: () => "Department Name",
-            cell: () => {
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as FetchedDepartmentType
                 return (
-                    <span className="line-clamp-2 text-sm text-grey-40">Upstream</span>
+                    <span className="capitalize line-clamp-2 text-sm text-grey-40">{item?.name}</span>
                 )
             }
         },
@@ -74,29 +76,10 @@ export const DepartmentsPage = () => {
             header: () => "",
             cell: () => {
                 return (
-                    <Menu>
-                        <MenuButton className="inline-flex items-center gap-2 rounded-lg bg-white-10 border border-[#E4E7EC] p-2 text-sm/6 font-semibold focus:outline-none">
-                            <Icon icon={riMore2Fill} width={16} height={16} />
-                        </MenuButton>
-                        <MenuItems
-                            transition
-                            anchor="bottom end"
-                            className="w-36 origin-top-right rounded-lg shadow-lg bg-white-10 p-2 space-y-2 text-xs transition duration-100 ease-out [--anchor-gap:var(--spacing-2)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
-                        >
-                            <MenuItem>
-                                <button type="button" className="group flex w-full items-center text-green-primary-40 gap-2 rounded-lg py-1.5 px-3">
-                                    <Eye size="16" color="#003A2B"/>
-                                    View profile
-                                </button>
-                            </MenuItem>
-                            <MenuItem>
-                                <button type="button" className="group flex w-full items-center text-red-40 gap-2 rounded-lg py-1.5 px-3">
-                                    <Trash size="16" color="#D42620"/>
-                                    Remove User
-                                </button>
-                            </MenuItem>
-                        </MenuItems>
-                    </Menu>
+                    <BaseButton type="button" size="tiny" theme="primary" variant="outlined">
+                        View
+                        <ArrowRight2 size="14" />
+                    </BaseButton>
                 )
             }
         },
@@ -126,18 +109,23 @@ export const DepartmentsPage = () => {
                     </BaseButton>
                 </div>
                 <div className="grid gap-8 p-6 bg-white-10 border border-[#DFE2E7] rounded-xl">
-                    <Table
-                        columns={columns}
-                        data={[""]}
-                        perPage={itemsPerPage}
-                        page={Number(kraFilters.page)}
-                        onPageChange={handlePageChange}
-                        totalCount={1}
-                        emptyStateText="We couldn't find any user on the system."
-                    />
+                    <RenderIf condition={!isLoading}>
+                        <Table
+                            columns={columns}
+                            data={data || []}
+                            perPage={itemsPerPage}
+                            page={Number(kraFilters.page)}
+                            onPageChange={handlePageChange}
+                            totalCount={1}
+                            emptyStateText="We couldn't find any department on the system."
+                        />
+                    </RenderIf>
+                    <RenderIf condition={isLoading}>
+                        <div className="flex flex-col flex-1 gap-10 max-w-screen-2xl mx-auto items-center justify-center"><Loader className="spinner size-6 text-green-primary-40" /></div>
+                    </RenderIf>
                 </div>
             </div>
-            <AddUser isOpen={openAddUser} close={() => setOpenAddUser(false)} />
+            <AddDepartment isOpen={openAddUser} close={() => setOpenAddUser(false)} />
         </section>
     )
 }

@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils"
-import { useId, useState } from "react"
+import { useId, useMemo, useState } from "react"
 import riAddFill from "@iconify-icons/ri/add-fill"
 import { Button } from "@headlessui/react"
 import { Icon } from "@iconify-icon/react"
@@ -10,6 +10,8 @@ import { useCreateKra } from "@/services/hooks/mutations"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
 import { createKRAStepOneSchema, createKRAStepTwoSchema } from "@/validations/kra"
 import { BaseButton, BaseInput, BaseSelectInput, Breadcrumb } from "@/components/core"
+import { useGetDepartments } from "@/services/hooks/queries"
+import { FetchedDepartmentType } from "@/types/department"
 
 const steps = [
     { label: "Key Result Area Overview", description: "Fill out these details about KRA" },
@@ -19,6 +21,7 @@ const steps = [
 export const CreateDashboardKraPage = () => {
     const uniqueId = useId()
     const navigate = useNavigate()
+    const { data } = useGetDepartments({})
     const { mutate, isPending } = useCreateKra(() => navigate("/dashboard/kra"))
     const [currentStep, setCurrentStep] = useState(0)
     const breadcrumbs = [
@@ -78,7 +81,7 @@ export const CreateDashboardKraPage = () => {
                                 {
                                     currentStep === 0 ? (
                                         <KeyResultArea formik={stepOneForm} />
-                                    ) : ( <WeightAndResponsibility formik={stepTwoForm} /> )
+                                    ) : ( <WeightAndResponsibility departments={data} formik={stepTwoForm} /> )
                                 }
                             </AnimatePresence>
 
@@ -121,7 +124,7 @@ const KeyResultArea = ({ formik }: { formik: any }) => {
     )
 }
 
-const WeightAndResponsibility = ({ formik }: { formik: any }) => {
+const WeightAndResponsibility = ({ formik, departments }: { formik: any; departments: FetchedDepartmentType[] | undefined }) => {
     const idPrefix = useId()
     const addResponsibility = () => {
         return { 
@@ -135,9 +138,12 @@ const WeightAndResponsibility = ({ formik }: { formik: any }) => {
         responsibilities.splice(index, 1);
         formik.setFieldValue("responsibilities", responsibilities)
     }
-    const departments = [
-        { label: "Human Resource", value: 0 }
-    ]
+    const modifiedDepartments = useMemo(() => {
+        if (departments === undefined) {
+            return []
+        }
+        return departments.map((item) => ({ label: item?.name, value: item?.id?.toString() }))
+    },[departments])
     return (
         <form id="second-step" onSubmit={formik.handleSubmit} className="flex flex-col items-center flex-1 gap-8">
             <h1 className="font-semibold text-2xl text-gray-900">Weight and Responsibility</h1>
@@ -155,7 +161,7 @@ const WeightAndResponsibility = ({ formik }: { formik: any }) => {
                     formik.values.responsibilities.map((responsibility: ReturnType<typeof addResponsibility>, index: number) =>
                         <motion.div key={responsibility.id} layout initial={{ y: -5, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -5, opacity: 0 }} transition={{ type: "spring", bounce: 0 }} className="flex gap-4">
                             <div className="grid flex-1">
-                                <BaseSelectInput label="Select Department" options={departments} {...formik.register(`responsibilities.${index}.department_id`)} />
+                                <BaseSelectInput label="Select Department" options={modifiedDepartments} {...formik.register(`responsibilities.${index}.department_id`)} />
                             </div>
                             <div className="grid flex-1">
                                 <BaseInput type="number" label="Assigned Weight" className="hide-number-input-arrows" {...formik.register(`responsibilities.${index}.department_weight`)} />

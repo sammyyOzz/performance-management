@@ -1,4 +1,5 @@
 import { BaseButton, BaseInput, BaseSelectInput } from "@/components/core"
+import { useGetCurrentUser } from "@/services/hooks/queries"
 import { Button } from "@headlessui/react"
 import { GalleryAdd } from "iconsax-react"
 
@@ -8,7 +9,7 @@ const genders = [
 ]
 
 export const ProfilePage = () => {
-
+    useGetCurrentUser()
     return (
         <section className="flex-1 bg-[#FDFDFD] p-10 overflow-y-scroll">
             <div className="flex flex-col gap-10 max-w-screen-2xl mx-auto">

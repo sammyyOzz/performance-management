@@ -52,7 +52,7 @@ export const BaseSelectInput: React.FC<SelectInputProps> = ({ containerVariant, 
                     className={cn(
                     "input px-2", error ? "input--border-error" : "input--border",
                     // Make the text of each option black on Windows
-                    "*:text-grey-70"
+                    "*:text-grey-70 capitalize"
                     )} {...props}
                 >
 
