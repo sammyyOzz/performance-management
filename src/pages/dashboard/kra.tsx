@@ -10,22 +10,24 @@ import { Badge, BaseButton, BaseSearch, Breadcrumb, RenderIf, Table } from "@/co
 import { SingleKraType } from "@/types/kra"
 import { formattedNumber } from "@/utils/textFormatter"
 import { useDebounce } from "@/hooks/useDebounce"
+import DatePicker from "react-datepicker"
+import { format } from "date-fns"
 
 export const KraPage = () => {
     const location = useLocation()
     const [itemsPerPage] = useState(10)
     const searchParams = new URLSearchParams(location.search)
-    const initialFilter = searchParams.get("filter") || "";
+    const initialFilter = searchParams.get("title") || "";
     const { value, onChangeHandler } = useDebounce(500, initialFilter, (debouncedValue) => {
         setKraFilters((prev) => {
-            const updatedFilters = { ...prev, filter: debouncedValue };
+            const updatedFilters = { ...prev, title: debouncedValue };
             updateQueryParams(updatedFilters); // Update the URL search params
             return updatedFilters;
         });
     })
-    const defaultFilters = getPaginationParams(searchParams, { page: 1, filter: "" });
+    const defaultFilters = getPaginationParams(searchParams, { page: 1, title: "", year: new Date().getFullYear()?.toString() });
     const [kraFilters, setKraFilters] = useState(defaultFilters)
-    const { data, isLoading } = useGetKRAs({ ...kraFilters })
+    const { data, isLoading } = useGetKRAs({ ...kraFilters, page_size: "10" })
     const tabs = ["all", "active", "done"]
     const [activeTab, setActiveTab] = useState(tabs[0])
     const cards = useMemo(() => {
@@ -143,7 +145,7 @@ export const KraPage = () => {
     };
     
     return (
-        <section className="flex py-9 px-5 md:px-8 lg:px-10 xl:px-12 2xl:px-0 page-height overflow-y-scroll">
+        <section className="flex py-9 px-5 md:px-8 lg:px-10 xl:px-12 page-height overflow-y-scroll bg-[#FFFFFF]">
             <div className="flex flex-col flex-1 gap-10 max-w-screen-2xl mx-auto">
                 <div className="flex flex-col gap-5">
                     <Breadcrumb items={breadcrumbs} />
@@ -154,10 +156,20 @@ export const KraPage = () => {
                                 <p className="font-normal text-gray-500 text-sm">See the key result area of the organisation</p>
                             </div>
                             <div className="flex items-center justify-end gap-4">
-                                <BaseButton size="tiny" theme="primary" variant="outlined">
-                                    2024
-                                    <ArrowDown2 size="14" />
-                                </BaseButton>
+                                <DatePicker
+                                    selected={kraFilters?.year as any}
+                                    onChange={(v) => setKraFilters((prev) => ({ ...prev, year: format(v as Date, "yyyy") }))}
+                                    showYearPicker
+                                    dateFormat="yyyy"
+                                    className="button button-tiny button-primary--outlined"
+                                    popperClassName="origin-top-right"
+                                    customInput={
+                                        <BaseButton size="tiny" theme="primary" variant="outlined">
+                                            {kraFilters?.year}
+                                            <ArrowDown2 size="14" />
+                                        </BaseButton>
+                                    }
+                                />
                             </div>
                         </div>
                         <div className="grid grid-cols-4 gap-10">

@@ -1,4 +1,4 @@
-import { FC, useMemo } from "react"
+import { FC, useMemo, useState } from "react"
 import { Drawer } from "vaul"
 import DatePicker from "react-datepicker"
 import riAddFill from "@iconify-icons/ri/add-fill"
@@ -9,7 +9,7 @@ import riCalendar2Line from "@iconify-icons/ri/calendar-2-line"
 import type { SingleKraType } from "@/types/kra"
 import { editKRASchema } from "@/validations/kra"
 import { AnimatePresence, motion } from "motion/react"
-import { useEditKra } from "@/services/hooks/mutations"
+import { useDeleteResponsibility, useEditKra } from "@/services/hooks/mutations"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
 import { BaseButton, BaseInput, BaseSelectInput, TextArea } from "@/components/core"
 import { useGetDepartments } from "@/services/hooks/queries"
@@ -21,6 +21,8 @@ interface EditKraDetailProps {
 }
 
 export const EditKraDetail: FC<EditKraDetailProps> = ({ isOpen, close, kra }) => {
+    const [idToDelete, setIdToDelete] = useState("")
+    const { mutate: deleteResponsibility, isPending: isDeleting } = useDeleteResponsibility(() => setIdToDelete(""))
     const { mutate, isPending } = useEditKra(() => close())
     const { data } = useGetDepartments({})
     const { dirty, errors, handleSubmit, isValid, register, resetForm, setFieldValue, values } = useFormikWrapper({
@@ -38,7 +40,7 @@ export const EditKraDetail: FC<EditKraDetailProps> = ({ isOpen, close, kra }) =>
         validationSchema: editKRASchema,
         onSubmit: () => {
             const { responsibilities, ...rest } = values
-            const newResponsibilities = responsibilities.map((item) => ({ department_id: parseInt(item?.department_id as any), department_weight: item?.department_weight, department_name: item?.department_name  }))
+            const newResponsibilities = responsibilities.map((item) => ({ department_id: parseInt(item?.department_id as any), department_weight: item?.department_weight, department_name: item?.department_name, id: item?.id  }))
             mutate({ id: kra?.id, responsibilities: newResponsibilities, ...rest })
         },
     })
@@ -49,10 +51,11 @@ export const EditKraDetail: FC<EditKraDetailProps> = ({ isOpen, close, kra }) =>
             department_name: ""
         }
     }
-    const removeResponsibility = (index: number) => {
-        const responsibilities = [...values.responsibilities]
-        responsibilities.splice(index, 1);
-        setFieldValue("responsibilities", responsibilities)
+    const removeResponsibility = (id: number) => {
+        deleteResponsibility(id.toString())
+        // const responsibilities = [...values.responsibilities]
+        // responsibilities.splice(index, 1);
+        // setFieldValue("responsibilities", responsibilities)
     }
     const departments = useMemo(() => {
         if (data === undefined) {
@@ -115,7 +118,7 @@ export const EditKraDetail: FC<EditKraDetailProps> = ({ isOpen, close, kra }) =>
                                     <AnimatePresence mode="popLayout" initial={false}>
                                     {
                                         values.responsibilities.map((responsibility, index) =>
-                                            <motion.div key={index} layout initial={{ y: -5, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -5, opacity: 0 }} transition={{ type: "spring", bounce: 0 }} className="flex gap-4">
+                                            <motion.div key={responsibility.id} layout initial={{ y: -5, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -5, opacity: 0 }} transition={{ type: "spring", bounce: 0 }} className="flex gap-4">
                                                 <div className="grid flex-1">
                                                     <BaseSelectInput label="Select Department" options={departments} {...register(`responsibilities.${index}.department_id` as any)} />
                                                 </div>
@@ -123,7 +126,10 @@ export const EditKraDetail: FC<EditKraDetailProps> = ({ isOpen, close, kra }) =>
                                                     <BaseInput type="number" label="Assigned Weight" className="hide-number-input-arrows" {...register(`responsibilities.${index}.department_weight` as any)} />
                                                 </div>
                                                 <div className="pt-6">
-                                                    <BaseButton type="button" size="small" theme="danger" variant="filled" onClick={() => removeResponsibility(index)}>Remove</BaseButton>
+                                                    <BaseButton type="button" size="small" theme="danger" variant="filled" loading={(idToDelete === responsibility.id.toString()) && isDeleting} disabled={isDeleting} block onClick={() => {
+                                                        setIdToDelete(responsibility.id.toString())
+                                                        removeResponsibility(responsibility.id)
+                                                    }}>Remove</BaseButton>
                                                 </div>
                                             </motion.div>
                                         )

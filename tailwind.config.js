@@ -1,20 +1,17 @@
-import formsPlugin from '@tailwindcss/forms'
-import tailwindAnimate from 'tailwindcss-animate'
+import formsPlugin from "@tailwindcss/forms";
+import tailwindAnimate from "tailwindcss-animate";
 
 /** @type {import('tailwindcss').Config} */
 export default {
-    darkMode: ["class"],
-    content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  darkMode: ["class"],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-  	extend: {
-  		borderRadius: {
-  			lg: 'var(--radius)',
-  			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
-  		},
+    extend: {
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
       colors: {
         yellow: {
           10: "#fef6e8",
@@ -26,7 +23,7 @@ export default {
           70: "#b67a12",
           80: "#92610e",
           90: "#6d490b",
-          100: "#553908"
+          100: "#553908",
         },
         white: {
           10: "#ffffff",
@@ -38,7 +35,8 @@ export default {
           70: "#bfbfbf",
           80: "#999999",
           90: "#737373",
-          100: "#595959"
+          100: "#595959",
+          110: "#f9f9f9",
         },
         green: {
           secondary: {
@@ -51,7 +49,7 @@ export default {
             70: "#0b712e",
             80: "#095b25",
             90: "#07441b",
-            100: "#053515"
+            100: "#053515",
           },
           primary: {
             10: "#e6ebea",
@@ -63,7 +61,7 @@ export default {
             70: "#002c20",
             80: "#00231a",
             90: "#001a13",
-            100: "#00140f"
+            100: "#00140f",
           },
         },
         red: {
@@ -76,7 +74,7 @@ export default {
           70: "#9f1d18",
           80: "#7f1713",
           90: "#5f110e",
-          100: "#4a0d0b"
+          100: "#4a0d0b",
         },
         grey: {
           10: "#ebebeb",
@@ -88,7 +86,10 @@ export default {
           70: "#262626",
           80: "#1f1f1f",
           90: "#171717",
-          100: "#121212"
+          100: "#121212",
+          110: "#e4e7ec",
+          120: "#dfe2e7",
+          130: "#667185",
         },
         accent: {
           10: "#fafff9",
@@ -100,11 +101,10 @@ export default {
           70: "#99bf90",
           80: "#7a9973",
           90: "#5c7356",
-          100: "#475943"
+          100: "#475943",
         },
-      }
-  	}
+      },
+    },
   },
   plugins: [formsPlugin, tailwindAnimate],
-}
-
+};

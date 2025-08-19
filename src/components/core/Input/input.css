@@ -7,7 +7,7 @@
 }
 
 .input--label {
-  @apply text-grey-40 font-normal text-sm !important;
+  @apply text-grey-40 font-medium text-sm !important;
 }
 
 .input--error {

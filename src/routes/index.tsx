@@ -5,7 +5,7 @@ import { AnimatePresence } from "motion/react";
 import { isAuthenticated } from "@/utils/authUtil";
 import { Routes, Route, Navigate, useLocation } from "react-router";
 import DashboardLayout from "@/layouts/dashboard-layout";
-import { AuthRoutes, DashboardRoutes, KRAsRoutes, SettingsRoutes } from "./modules";
+import { AuthRoutes, DashboardRoutes, EmployeeAppraisalRoutes, KRAsRoutes, SettingsRoutes, TasksRoutes } from "./modules";
 import { useRefreshToken } from "@/services/hooks/mutations";
 import { getItem } from "@/utils/localStorage";
 
@@ -79,9 +79,11 @@ const Router = () => {
             </Route>
             <Route element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
                 <Route index element={<LocationProvider><Home /></LocationProvider>} />
-                <Route path="dashboard/*" element={<LocationProvider><DashboardRoutes /></LocationProvider>} />
                 <Route path="kra/*" element={<LocationProvider><KRAsRoutes /></LocationProvider>} />
+                <Route path="tasks/*" element={<LocationProvider><TasksRoutes /></LocationProvider>} />
                 <Route path="settings/*" element={<LocationProvider><SettingsRoutes /></LocationProvider>} />
+                <Route path="dashboard/*" element={<LocationProvider><DashboardRoutes /></LocationProvider>} />
+                <Route path="employee-appraisal/*" element={<LocationProvider><EmployeeAppraisalRoutes /></LocationProvider>} />
             </Route>
         </Routes>
     );

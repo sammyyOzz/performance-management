@@ -144,3 +144,6 @@ body,
 .react-datepicker__year-wrapper > [tabindex="0"] {
   @apply text-green-primary-40 bg-green-secondary-10;
 }
+.react-datepicker__tab-loop {
+  @apply absolute !important;
+}

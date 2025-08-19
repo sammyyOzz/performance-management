@@ -1,25 +1,44 @@
 import { useState } from "react"
 import { cn } from "@/lib/utils"
 import { motion } from "motion/react"
-import { Link, useLocation } from "react-router"
-import { ArrowDown2, ArrowRight2, FormatCircle, More2 } from "iconsax-react"
-import { Badge, BaseButton, BaseSearch, Table } from "@/components/core"
+import { Link, useLocation, useParams } from "react-router"
+import { ArrowDown2, ArrowRight2, FormatCircle, More2, WalletMoney } from "iconsax-react"
+import { Badge, BaseButton, BaseSearch, RenderIf, Table } from "@/components/core"
 import { getPaginationParams, updateQueryParams } from "@/hooks/usePaginationParams"
+import { useGetKRAs } from "@/services/hooks/queries"
+import { FetchedKRAType } from "@/types/kra"
+import { useDebounce } from "@/hooks/useDebounce"
+import { formattedNumber } from "@/utils/textFormatter"
+import { Loader } from "@/components/core/Button/Loader"
+import DatePicker from "react-datepicker"
+
+const tabs = ["all", "active", "done"];
 
 export const DepartmentalSubInitiativePage = () => {
+    const { id } = useParams()
     const location = useLocation()
     const [itemsPerPage] = useState(15)
+    const [year, setYear] = useState(new Date().getFullYear());
+    
     const searchParams = new URLSearchParams(location.search)
-    const [kraFilters, setKraFilters] = useState(
-        getPaginationParams(searchParams, { page: 1 })
-    )
-    const tabs = ["all", "active", "done"]
+    // const initialFilter = searchParams.get("title") || "";
+    const { value: searchValue, onChangeHandler } = useDebounce(500);
+
+    const [kraFilters, setKraFilters] = useState(getPaginationParams(searchParams, { page: 1 }))
+    
+    const { data: kras, isLoading } = useGetKRAs({ 
+        department_id: id as string, 
+        page_size: "10", 
+        year: year.toString(), 
+        search: searchValue,
+        ...kraFilters 
+    })
     const [activeTab, setActiveTab] = useState(tabs[0])
     const cards = [
-        { icon: <FormatCircle size="20" color="#003A2B" />, label: "Total KRAs", value: "3" },
-        { icon: <FormatCircle size="20" color="#003A2B"/>, label: "Total KRAs Done", value: "6" },
-        { icon: <FormatCircle size="20" color="#003A2B"/>, label: "Total KRAs Active", value: "6" },
-        { icon: <More2 size="20" color="#003A2B" />, label: "Total weight", value: "22.75" },
+        { icon: <FormatCircle size="20" color="#003A2B" />, label: "Total KRAs", value: kras?.total_items },
+        { icon: <WalletMoney size="20" color="#003A2B"/>, label: "Budget Allocation", value: formattedNumber(kras?.total_budget_allocation || 0, { maximumFractionDigits: 0 }) },
+        { icon: <WalletMoney size="20" color="#003A2B"/>, label: "Budget Released", value: formattedNumber(kras?.total_budget_released || 0, { maximumFractionDigits: 0 }) },
+        { icon: <More2 size="20" color="#003A2B" />, label: "Total weight", value: kras?.total_weight },
     ]
 
     const columns = [
@@ -27,18 +46,20 @@ export const DepartmentalSubInitiativePage = () => {
             enableSorting: false,
             accessorKey: "objective",
             header: () => "Objective",
-            cell: () => {
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as FetchedKRAType["data"][0]
                 return (
-                    <span className="line-clamp-2">Optimization of Crude Oil and Gas reserves to 40 million barrels and 220tcf respectively</span>
+                    <span className="line-clamp-2">{item?.name}</span>
                 )
             }
         },
         {
             accessorKey: "weights",
             header: () => "Departmental Weights",
-            cell: () => {
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as FetchedKRAType["data"][0]
                 return (
-                    <span className="line-clamp-2">1</span>
+                    <span className="line-clamp-2">{item?.weight}</span>
                 )
             }
         },
@@ -56,9 +77,10 @@ export const DepartmentalSubInitiativePage = () => {
             enableSorting: false,
             accessorKey: "action",
             header: () => "Action",
-            cell: () => {
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as FetchedKRAType["data"][0]
                 return (
-                    <Link to="/kra/departments/sub-initiative/1" className="button button-tiny button-primary--outlined">
+                    <Link to={`/kra/departments/${id}/sub-initiative/${item?.id}`} className="button button-tiny button-primary--outlined">
                         View sub-initiative
                         <ArrowRight2 size="14" />
                     </Link>
@@ -77,7 +99,7 @@ export const DepartmentalSubInitiativePage = () => {
 
     };
     return (
-        <section className="flex px-5 md:px-8 lg:px-10 xl:px-12 2xl:px-0 page-height overflow-y-scroll">
+        <section className="flex w-full page-height overflow-y-scroll">
             <div className="flex flex-col flex-1 gap-12 max-w-screen-2xl mx-auto">
                 <div className="flex flex-col gap-5">
                     <div className="grid gap-8">
@@ -113,22 +135,36 @@ export const DepartmentalSubInitiativePage = () => {
                             }
                         </div>
                         <div className="flex items-center gap-3 w-96">
-                            <BaseSearch type="text" placeholder="Search..." />
-                            <BaseButton size="tiny" theme="primary" variant="outlined">
-                                2024
-                                <ArrowDown2 size="14" />
-                            </BaseButton>
+                            <BaseSearch type="text" placeholder="Search..." defaultValue={searchValue} onChange={onChangeHandler} />
+                            <DatePicker
+                                selected={year ? new Date(year) : null}
+                                onChange={(v) => v && setYear(v.getFullYear())}
+                                showYearPicker
+                                dateFormat="yyyy"
+                                className="button button-tiny button-primary--outlined"
+                                customInput={
+                                <BaseButton size="tiny" theme="primary" variant="outlined">
+                                    {year}
+                                    <ArrowDown2 size="14" />
+                                </BaseButton>
+                                }
+                            />
                         </div>
                     </div>
-                    <Table
-                        columns={columns}
-                        data={[""]}
-                        perPage={itemsPerPage}
-                        page={Number(kraFilters.page)}
-                        onPageChange={handlePageChange}
-                        totalCount={30}
-                        emptyStateText="We couldn't find any kra on the system."
-                    />
+                    <RenderIf condition={!isLoading}>
+                        <Table
+                            columns={columns}
+                            data={kras?.data || []}
+                            perPage={itemsPerPage}
+                            page={Number(kraFilters.page)}
+                            onPageChange={handlePageChange}
+                            totalCount={30}
+                            emptyStateText="We couldn't find any kra on the system."
+                        />
+                    </RenderIf>
+                    <RenderIf condition={isLoading}>
+                        <div className="flex flex-col flex-1 gap-10 max-w-screen-2xl mx-auto items-center justify-center"><Loader className="spinner size-6 text-green-primary-40" /></div>
+                    </RenderIf>
                 </div>
             </div>
         </section>

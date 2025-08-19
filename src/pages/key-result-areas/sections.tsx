@@ -1,19 +1,31 @@
-import { useCallback, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { cn } from "@/lib/utils"
 import { motion } from "motion/react"
 import { Icon } from "@iconify-icon/react"
-import { useLocation } from "react-router"
+import { useLocation, useParams } from "react-router"
 import riMore2Fill from "@iconify-icons/ri/more-2-fill"
 import { Edit2, FormatCircle, Trash } from "iconsax-react"
-import { Badge, BaseSearch, Table } from "@/components/core"
-import { EditSectionsKra } from "@/components/page/key-result-areas"
+import { Badge, BaseSearch, RenderIf, Table } from "@/components/core"
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react"
 import { getPaginationParams, updateQueryParams } from "@/hooks/usePaginationParams"
+import { EditSectionsKra } from "@/components/page/key-result-areas"
+import { useGetDepartment, useGetSubInitiatives } from "@/services/hooks/queries"
+import { FetchedSubInitiative } from "@/types/sub-initiative"
+import { FetchedDepartmentType } from "@/types/department"
 
 export const SectionsKRAPage = () => {
     const location = useLocation()
+    const { id } = useParams()
     const [itemsPerPage] = useState(15)
     const searchParams = new URLSearchParams(location.search)
+    const { data: department, isSuccess } = useGetDepartment(id as string)
+
+    const sections = useMemo(() => {
+        return department?.children?.filter((item) => item?.level === "section") || []
+    }, [department?.children])
+    
+    const { data: departmentSections } = useGetSubInitiatives({ department_id: (sections || []).map((item) => item?.id).join(), page_size: "10" }, { enabled: isSuccess })
+    
     const [kraFilters, setKraFilters] = useState(
         getPaginationParams(searchParams, { page: 1 })
     )
@@ -21,47 +33,52 @@ export const SectionsKRAPage = () => {
     const [toggleModals, setToggleModals] = useState({
         openDeleteKra: false,
         openEditKra: false,
+        activeKra: null as FetchedSubInitiative | null
     })
         
-    const toggleDeleteKra = useCallback(() => {
+    const toggleDeleteKra = useCallback((item: FetchedSubInitiative | null) => {
         setToggleModals((prev) => ({
-        ...prev,
-        openDeleteKra: !toggleModals.openDeleteKra,
+            ...prev,
+            activeKra: item,
+            openDeleteKra: !toggleModals.openDeleteKra,
         }))
     }, [toggleModals.openDeleteKra])
     
-    const toggleEditKra = useCallback(() => {
+    const toggleEditKra = useCallback((item: FetchedSubInitiative | null) => {
         setToggleModals((prev) => ({
-        ...prev,
-        openEditKra: !toggleModals.openEditKra,
+            ...prev,
+            activeKra: item,
+            openEditKra: !toggleModals.openEditKra,
         }))
     }, [toggleModals.openEditKra])
     
     const tabs = ["all", "active", "done"]
     const [activeTab, setActiveTab] = useState(tabs[0])
     const cards = [
-        { icon: <FormatCircle size="20" color="#003A2B" />, label: "Total KRAs", value: "1.75" },
-        { icon: <FormatCircle size="20" color="#003A2B"/>, label: "Total KRAs Done", value: "1" },
-        { icon: <FormatCircle size="20" color="#003A2B"/>, label: "Total KRAs Active", value: "1" },
+        { icon: <FormatCircle size="20" color="#003A2B" />, label: "Total KRAs", value: "5" },
+        { icon: <FormatCircle size="20" color="#003A2B"/>, label: "Total KRAs Done", value: "3" },
+        { icon: <FormatCircle size="20" color="#003A2B"/>, label: "Total KRAs Active", value: "2" },
     ]
 
     const columns = [
         {
             enableSorting: false,
-            accessorKey: "kra",
-            header: () => "Key Result Area",
-            cell: () => {
+            accessorKey: "sub_initiative",
+            header: () => "Sub Initiative",
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as FetchedSubInitiative
                 return (
-                    <span className="line-clamp-2">Compendium of Innovation Champions</span>
+                    <span className="line-clamp-2">{item?.name}</span>
                 )
             }
         },
         {
             accessorKey: "weights",
-            header: () => "Departmental Weights",
-            cell: () => {
+            header: () => "Graded Weight",
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as FetchedSubInitiative
                 return (
-                    <span className="line-clamp-2">0.25</span>
+                    <span className="line-clamp-2">{item?.graded_weight}</span>
                 )
             }
         },
@@ -69,18 +86,20 @@ export const SectionsKRAPage = () => {
             enableSorting: false,
             accessorKey: "responsibility",
             header: () => "Responsibility",
-            cell: () => {
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as FetchedSubInitiative
                 return (
-                    <span className="line-clamp-2">Records</span>
+                    <span className="line-clamp-2 capitalize">{item?.responsibilities?.filter((v) => v?.level === "section")?.map((v) => v?.department_name)?.join(", ")}</span>
                 )
             }
         },
         {
             accessorKey: "assigned_weight",
             header: () => "Assigned Weight",
-            cell: () => {
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as FetchedSubInitiative
                 return (
-                    <span className="line-clamp-2">0.25</span>
+                    <span className="line-clamp-2">{item?.assigned_weight}</span>
                 )
             }
         },
@@ -98,7 +117,8 @@ export const SectionsKRAPage = () => {
             enableSorting: false,
             accessorKey: "action",
             header: () => "Action",
-            cell: () => {
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as FetchedSubInitiative
                 return (
                     <Menu>
                         <MenuButton className="inline-flex items-center gap-2 rounded-lg bg-white-10 border border-[#E4E7EC] p-2 text-sm/6 font-semibold focus:outline-none">
@@ -110,13 +130,13 @@ export const SectionsKRAPage = () => {
                             className="w-28 origin-top-right rounded-lg shadow-lg bg-white-10 p-2 space-y-2 text-xs transition duration-100 ease-out [--anchor-gap:var(--spacing-2)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
                         >
                             <MenuItem>
-                                <button type="button" className="group flex w-full items-center text-green-primary-40 gap-2 rounded-lg py-1.5 px-3" onClick={() => toggleEditKra()}>
+                                <button type="button" className="group flex w-full items-center text-green-primary-40 gap-2 rounded-lg py-1.5 px-3" onClick={() => toggleEditKra(item)}>
                                     <Edit2 size="16" color="#003A2B"/>
                                     Edit
                                 </button>
                             </MenuItem>
                             <MenuItem>
-                                <button type="button" className="group flex w-full items-center text-red-40 gap-2 rounded-lg py-1.5 px-3" onClick={() => toggleDeleteKra()}>
+                                <button type="button" className="group flex w-full items-center text-red-40 gap-2 rounded-lg py-1.5 px-3" onClick={() => toggleDeleteKra(item)}>
                                     <Trash size="16" color="#D42620"/>
                                     Delete
                                 </button>
@@ -135,25 +155,28 @@ export const SectionsKRAPage = () => {
             updateQueryParams(updatedFilters); // Use the updated filters directly
             return updatedFilters;
         });
-
     };
 
     return (
-        <section className="flex flex-1 py-6 px-5 md:px-8 lg:px-10 page-height overflow-y-scroll">
+        <section className="flex flex-1 py-6 px-5 md:px-8 lg:px-10 page-height overflow-y-scroll bg-[#FFFFFF]">
             <div className="flex flex-col flex-1 gap-6 max-w-screen-2xl mx-auto">
                 <div className="flex flex-col gap-3">
                     <div className="grid gap-1 py-2 border-b border-b-[#DFE2E7]">
-                        <h1 className="font-semibold text-2xl text-black">HUMAN RESOURCES MANAGEMENT - SECTIONS</h1>
+                        <h1 className="font-semibold text-2xl text-black uppercase">{department?.name || 'Sections'} - SECTIONS</h1>
                         <p className="font-normal text-sm text-[#667185]">See the key result area of your sections.</p>
                     </div>
-                    <div className="flex flex-col gap-1 w-full">
-                        <span className="font-medium text-sm text-grey-40">Branch names</span>
-                        <div className="flex items-center gap-8 p-4 rounded-md border border-[#DFE2E7]">
-                            <span className="text-sm text-grey-40">Records</span>
-                            <span className="text-sm text-grey-40">Open Registry</span>
-                            <span className="text-sm text-grey-40">Secret Registry</span>
+                    <RenderIf condition={sections.length > 0}>
+                        <div className="flex flex-col gap-1 w-full">
+                            <span className="font-medium text-sm text-grey-40">Section names</span>
+                            <div className="flex items-center gap-8 p-4 rounded-md border border-[#DFE2E7]">
+                                {
+                                    sections.map((item) =>
+                                        <span key={item?.id} className="text-sm text-grey-40 capitalize">{item?.name || 'Unnamed Section'}</span>
+                                    )
+                                }
+                            </div>
                         </div>
-                    </div>
+                    </RenderIf>
                 </div>
                 <div className="flex flex-col flex-1 gap-12">
                     <div className="flex flex-col gap-5">
@@ -195,7 +218,7 @@ export const SectionsKRAPage = () => {
                         </div>
                         <Table
                             columns={columns}
-                            data={[""]}
+                            data={departmentSections || []}
                             perPage={itemsPerPage}
                             page={Number(kraFilters.page)}
                             onPageChange={handlePageChange}
@@ -205,7 +228,7 @@ export const SectionsKRAPage = () => {
                     </div>
                 </div>
             </div>
-            <EditSectionsKra isOpen={toggleModals.openEditKra} close={() => toggleEditKra()} />
+            <EditSectionsKra kra={toggleModals.activeKra as FetchedSubInitiative} department={department as FetchedDepartmentType} isOpen={toggleModals.openEditKra} close={() => toggleEditKra(null)} />
         </section>
     )
 }

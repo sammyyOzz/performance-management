@@ -1,17 +1,52 @@
-import { FC } from "react"
+import { FC, useId, useMemo } from "react"
 import { Drawer } from "vaul"
 import riAddFill from "@iconify-icons/ri/add-fill"
 import { Icon } from "@iconify-icon/react"
 import { Button } from "@headlessui/react"
 import riCloseFill from "@iconify-icons/ri/close-fill"
-import { BaseButton, BaseInput } from "@/components/core"
+import { BaseButton, BaseInput, BaseSelectInput } from "@/components/core"
+import type { FetchedSubInitiative } from "@/types/sub-initiative"
+import { useFormikWrapper } from "@/hooks/useFormikWrapper"
+import { AnimatePresence, motion } from "motion/react"
+import { FetchedDepartmentType } from "@/types/department"
 
 interface EditDivisionKraProps {
+    kra: FetchedSubInitiative;
+    department: FetchedDepartmentType;
     isOpen: boolean;
     close: () => void;
 }
 
-export const EditDivisionKra: FC<EditDivisionKraProps> = ({ isOpen, close }) => {
+export const EditDivisionKra: FC<EditDivisionKraProps> = ({ isOpen, close, kra, department }) => {
+    const idPrefix = useId()
+    const { register, setFieldValue, values } = useFormikWrapper({
+        initialValues: {
+            name: kra?.name || "",
+            assigned_weight: kra?.assigned_weight || "",
+            responsibilities: kra?.responsibilities?.map((item) => ({ id: item?.id?.toString(), department_id: item?.department_id?.toString(), department_weight: item?.department_weight?.toString(), level: item?.level })) || [] as { id: string; department_id: string; department_weight: string; level: string; }[]
+        },
+        enableReinitialize: true,
+        onSubmit() {
+            
+        },
+    })
+
+    const addChildren = (level: string) => {
+        return { 
+            id: `${idPrefix}-${values?.responsibilities?.filter((item) => item.level === level).length}`,
+            department_id: "", 
+            department_weight: "",
+            level
+        }
+    }
+    const removeResponsibility = (id: string, level: string) => {
+        const children = [...values.responsibilities]
+        children.splice(children.indexOf(children.find((item) => (item.department_id === id) && (item.level === level))!), 1);
+        setFieldValue("responsibilities", children)
+    }
+    const deptDivisions = useMemo(() => {
+        return department?.children?.filter((item) => item?.level === "division")?.map((item) => ({ label: item?.name, value: item?.id?.toString() })) || []
+    },[department?.children])
     return (
         <Drawer.Root open={isOpen} onOpenChange={close} direction="right">
             <Drawer.Portal>
@@ -32,14 +67,27 @@ export const EditDivisionKra: FC<EditDivisionKraProps> = ({ isOpen, close }) => 
                                 </div>
                                 
                                 <div className="flex flex-col w-full gap-5">
-                                    <BaseInput label="Name of KRA" type="text" />
-                                    <BaseInput label="Departmental Weight" type="text" />
+                                    <BaseInput label="Name of KRA" type="text" {...register("name")} />
+                                    <BaseInput label="Departmental Weight" type="text" {...register("assigned_weight")} />
                                     <div className="flex flex-col gap-2">
-                                        <div className="grid grid-cols-2 gap-4">
-                                            <BaseInput label="Assigned Weight" type="text" />
-                                            <BaseInput label="Responsibility" type="text" />
-                                        </div>
-                                        <Button type="button" className="flex items-center justify-center gap-2 p-3 w-fit ml-auto rounded-lg border border-[#F0F1F4] bg-[#F5F6F7] text-xs text-grey-40">
+                                        <AnimatePresence mode="popLayout" initial={false}>
+                                        {
+                                            values?.responsibilities?.filter((item) => item?.level === "division")?.map((childItem) =>
+                                                <motion.div key={childItem.id} layout initial={{ y: -5, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -5, opacity: 0 }} transition={{ type: "spring", bounce: 0 }} className="flex gap-4">
+                                                    <div className="grid flex-1">
+                                                        <BaseSelectInput label="Responsibility" options={deptDivisions} {...register(`responsibilities.${values.responsibilities.indexOf(childItem)}.department_id` as any)} />
+                                                    </div>
+                                                    <div className="grid flex-1">
+                                                        <BaseInput type="number" label="Assigned Weight" className="hide-number-input-arrows" {...register(`responsibilities.${values.responsibilities.indexOf(childItem)}.department_weight` as any)} />
+                                                    </div>
+                                                    <div className="pt-6">
+                                                        <BaseButton type="button" size="small" theme="danger" variant="filled" onClick={() => removeResponsibility(childItem.id, "division")}>Remove</BaseButton>
+                                                    </div>
+                                                </motion.div>
+                                            )
+                                        }
+                                        </AnimatePresence>
+                                        <Button type="button" className="flex items-center justify-center gap-2 p-3 w-fit ml-auto rounded-lg border border-[#F0F1F4] bg-[#F5F6F7] text-xs text-grey-40" onClick={() => addChildren("division")}>
                                             Add division
                                             <Icon icon={riAddFill} width={16} height={16} />
                                         </Button>

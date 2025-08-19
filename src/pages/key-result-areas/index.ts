@@ -1,4 +1,5 @@
 export * from "./branches"
+export * from "./departments"
 export * from "./departmental"
 export * from "./departmental/overview"
 export * from "./departmental/sub-initiative"

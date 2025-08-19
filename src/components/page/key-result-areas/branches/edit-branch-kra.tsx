@@ -5,13 +5,17 @@ import { Icon } from "@iconify-icon/react"
 import { Button } from "@headlessui/react"
 import riCloseFill from "@iconify-icons/ri/close-fill"
 import { BaseButton, BaseInput } from "@/components/core"
+import { FetchedSubInitiative } from "@/types/sub-initiative"
+import { FetchedDepartmentType } from "@/types/department"
 
 interface EditBranchKraProps {
     isOpen: boolean;
     close: () => void;
+    kra: FetchedSubInitiative | null;
+    department: FetchedDepartmentType | null;
 }
 
-export const EditBranchKra: FC<EditBranchKraProps> = ({ isOpen, close }) => {
+export const EditBranchKra: FC<EditBranchKraProps> = ({ isOpen, close, kra, department }) => {
     return (
         <Drawer.Root open={isOpen} onOpenChange={close} direction="right">
             <Drawer.Portal>
@@ -32,12 +36,12 @@ export const EditBranchKra: FC<EditBranchKraProps> = ({ isOpen, close }) => {
                                 </div>
                                 
                                 <div className="flex flex-col w-full gap-5">
-                                    <BaseInput label="Name of KRA" type="text" />
-                                    <BaseInput label="Departmental Weight" type="text" />
+                                    <BaseInput label="Name of KRA" type="text" defaultValue={kra?.name || ''} />
+                                    <BaseInput label="Departmental Weight" type="text" defaultValue={kra?.graded_weight || ''} />
                                     <div className="flex flex-col gap-2">
                                         <div className="grid grid-cols-2 gap-4">
-                                            <BaseInput label="Responsibility" type="text" />
-                                            <BaseInput label="Assigned Weight" type="text" />
+                                            <BaseInput label="Responsibility" type="text" defaultValue={department?.name || ''} />
+                                            <BaseInput label="Assigned Weight" type="text" defaultValue={kra?.assigned_weight || ''} />
                                         </div>
                                         <Button type="button" className="flex items-center justify-center gap-2 p-3 w-fit ml-auto rounded-lg border border-[#F0F1F4] bg-[#F5F6F7] text-xs text-grey-40">
                                             Add Branches

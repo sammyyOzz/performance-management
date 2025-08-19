@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { EmailRegex } from "./regex";
+import { EmailRegex, DigitRegex } from "./regex";
 
 export const PasswordSchema = Yup.string()
   .trim()
@@ -8,7 +8,7 @@ export const PasswordSchema = Yup.string()
 //     UppercaseRegex,
 //     "Password must contain at least one uppercase letter"
 //   )
-//   .matches(DigitRegex, "Password must contain at least one digit")
+  .matches(DigitRegex, "Password must contain at least one digit")
   .required("Password is required");
 
 export const EmailSchema = Yup.string()
@@ -17,6 +17,27 @@ export const EmailSchema = Yup.string()
   .required("Email is required");
 
 export const loginSchema = Yup.object().shape({
-  email: EmailSchema,
+  email: Yup.string().matches(EmailRegex, "Invalid email").required("Email is required"),
+  password: Yup.string().required("Password is required"),
+});
+
+export const changePasswordSchema = Yup.object().shape({
+  old_password: PasswordSchema,
+  new_password: PasswordSchema,
+  confirm_password: PasswordSchema.oneOf(
+    [Yup.ref("new_password")],
+    "Passwords must match"
+  ),
+});
+
+export const inviteUserSchema = Yup.object().shape({
   password: PasswordSchema,
+  confirm_password: PasswordSchema.oneOf(
+    [Yup.ref("password")],
+    "Passwords must match"
+  ),
+});
+
+export const forgotPasswordSchema = Yup.object().shape({
+    email: Yup.string().matches(EmailRegex, "Invalid email").required("Email is required"),
 });

@@ -1,6 +1,15 @@
 import React from "react";
 
-import { ColumnDef, flexRender, getCoreRowModel, getSortedRowModel, RowSelectionState, SortingState, TableOptions, useReactTable } from "@tanstack/react-table";
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  RowSelectionState,
+  SortingState,
+  TableOptions,
+  useReactTable,
+} from "@tanstack/react-table";
 import { Icon } from "@iconify-icon/react";
 import { Pagination, RenderIf } from "..";
 import { EmptyState, TableLoader } from "./index";
@@ -15,7 +24,7 @@ interface TableProps {
   loading?: boolean;
   perPage?: number;
   paginateData?: boolean; // show pagination
-  config?: Partial<TableOptions<any>>
+  config?: Partial<TableOptions<any>>;
   totalCount?: number; // total count of table data
   emptyStateText?: string;
   emptyStateTitle?: string;
@@ -27,6 +36,8 @@ interface TableProps {
   onClick?: (row: any) => void; // on click event for table row
   // eslint-disable-next-line no-unused-vars
   onPageChange: (page: number, rowsPerPage: number) => void; // handle pagination change
+  hasFooter?: boolean;
+  footerData?: any[];
 }
 
 export const Table: React.FC<TableProps> = ({
@@ -44,13 +55,15 @@ export const Table: React.FC<TableProps> = ({
   onPageChange,
   onClick,
   paginateData = true,
-  config
+  config,
+  hasFooter,
+  footerData,
 }) => {
   const location = useLocation();
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [currentPage, setCurrentPage] = React.useState<number>(page as number);
-  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({})
+  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
 
   const table = useReactTable({
     data,
@@ -64,12 +77,12 @@ export const Table: React.FC<TableProps> = ({
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     debugTable: false,
-    ...config
+    ...config,
   });
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    onPageChange(page, (perPage as number));
+    onPageChange(page, perPage as number);
   };
 
   // Function to navigate to previous page
@@ -90,7 +103,7 @@ export const Table: React.FC<TableProps> = ({
     if (paginateData) {
       const searchParams = new URLSearchParams(window.location.search);
       getPaginationParams(searchParams, {});
-      getData?.(currentPage, (perPage as number));
+      getData?.(currentPage, perPage as number);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search]);
@@ -110,15 +123,23 @@ export const Table: React.FC<TableProps> = ({
                   return (
                     <th
                       key={header.id}
-                      className={`text-left px-3 py-2 last:text-right ${header.column.getCanSort() ? "cursor-pointer select-none" : "cursor-default"}`}
-                      onClick={header.column.getCanSort() ? header.column.getToggleSortingHandler() : () => { }}
+                      className={`text-left px-3 py-2 last:text-right ${
+                        header.column.getCanSort()
+                          ? "cursor-pointer select-none"
+                          : "cursor-default"
+                      }`}
+                      onClick={
+                        header.column.getCanSort()
+                          ? header.column.getToggleSortingHandler()
+                          : () => {}
+                      }
                       title={
                         header.column.getCanSort()
                           ? header.column.getNextSortingOrder() === "asc"
                             ? "Sort ascending"
                             : header.column.getNextSortingOrder() === "desc"
-                              ? "Sort descending"
-                              : "Clear sort"
+                            ? "Sort descending"
+                            : "Clear sort"
                           : undefined
                       }
                     >
@@ -156,13 +177,18 @@ export const Table: React.FC<TableProps> = ({
                     key={row.id}
                     data-testid={row.id}
                     onClick={() => onClick?.(row)}
-                    className={cn(!onClick ? "cursor-default" : "cursor-pointer transition duration-500 ease-out hover:bg-gray-50", row?.getIsSelected() ? "font-medium" : "font-normal")}
+                    className={cn(
+                      !onClick
+                        ? "cursor-default"
+                        : "cursor-pointer transition duration-500 ease-out hover:bg-gray-50",
+                      row?.getIsSelected() ? "font-medium" : "font-normal"
+                    )}
                   >
                     {row.getVisibleCells().map((cell) => {
                       return (
                         <td
                           key={cell.id}
-                          className="text-left pl-3 pr-5 py-3.5 text-gray-800 text-sm border-b border-b-[#DFE2E7]"
+                          className="text-left last:text-right pl-3 last:pr-0 pr-5 py-3.5 text-gray-800 text-sm border-b border-b-[#DFE2E7]"
                           onClick={(e) => {
                             if (
                               cell.column.id === "action" ||
@@ -184,14 +210,53 @@ export const Table: React.FC<TableProps> = ({
               })}
             </tbody>
           </RenderIf>
+
+          <RenderIf condition={!!hasFooter}>
+            <tbody>
+              <tr className="border-b border-b-[#DFE2E7]">
+                <td className="py-2"></td>
+                <td className="py-2"></td>
+                <td className="py-2"></td>
+                <td className="py-2"></td>
+                <td className="py-2"></td>
+              </tr>
+            </tbody>
+
+            <tfoot className="bg-white-110">
+              <tr className="border border-grey-120">
+                {footerData?.map((datum, index) => (
+                  <td
+                    key={datum.id}
+                    className={cn(
+                      "text-left pl-3 pr-5 py-3.5 text-gray-800 text-sm",
+                      index === 0
+                        ? "rounded-l-lg"
+                        : index === footerData.length - 1
+                        ? "rounded-r-lg"
+                        : ""
+                    )}
+                  >
+                    {datum.value}
+                  </td>
+                ))}
+              </tr>
+            </tfoot>
+          </RenderIf>
         </table>
         <RenderIf condition={data.length < 1 && !loading}>
-            <div className="flex items-center justify-center">
-              <EmptyState emptyStateTitle={emptyStateTitle} emptyStateText={emptyStateText} emptyStateAction={emptyStateAction} emptyStateImage={emptyStateImage} />
-            </div>
+          <div className="flex items-center justify-center">
+            <EmptyState
+              emptyStateTitle={emptyStateTitle}
+              emptyStateText={emptyStateText}
+              emptyStateAction={emptyStateAction}
+              emptyStateImage={emptyStateImage}
+            />
+          </div>
         </RenderIf>
       </div>
-      <RenderIf condition={paginateData && (totalCount as number) > 0 && !loading}>
+      <RenderIf
+        condition={paginateData && (totalCount as number) > 0 && !loading}
+      >
         <Pagination
           className="px-0 pb-6"
           count={totalCount as number}
@@ -200,6 +265,7 @@ export const Table: React.FC<TableProps> = ({
           totalPages={Math.ceil((totalCount as number) / (perPage as number))}
           prev={prev}
           next={next}
+          goToPage={(newPage) => handlePageChange(newPage)}
         />
       </RenderIf>
     </div>

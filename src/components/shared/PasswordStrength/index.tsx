@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
-import { type FC, useCallback, useMemo } from "react";
+import { type FC, useMemo } from "react";
 
 interface PasswordStrengthProps {
   /**
@@ -20,30 +20,31 @@ export const PasswordStrength: FC<PasswordStrengthProps> = ({ value }) => {
         ]
     },[])
 
-    const getBarStyles = useCallback(() => {
+    const barStyles = useMemo(() => {
         const validCount = rules.filter(rule => rule.regex.test(value)).length;
 
-        switch (validCount) {
-            case 1:
-                return [{ width: "100%", bgColor: "bg-error-500" }, { width: "0%", bgColor: "" }, { width: "0%", bgColor: "" }];
-            case 2:
-                return [
-                    { width: "100%", bgColor: "bg-warning-500" },
-                    { width: "100%", bgColor: "bg-warning-500" },
-                    { width: "0%", bgColor: "" }
-                ];
-            case 3:
-                return [
-                    { width: "100%", bgColor: "bg-success-500" },
-                    { width: "100%", bgColor: "bg-success-500" },
-                    { width: "100%", bgColor: "bg-success-500" }
-                ];
-            default:
-                return [{ width: "0%", bgColor: "" }, { width: "0%", bgColor: "" }, { width: "0%", bgColor: "" }];
+        if (validCount === 1) {
+            return [{ width: "100%", bgColor: "bg-red-50" }, { width: "0%", bgColor: "" }, { width: "0%", bgColor: "" }];
         }
-    }, [rules, value]);
 
-    const barStyles = getBarStyles();
+        if (validCount >= 2 && validCount < 5) {
+            return [
+                    { width: "100%", bgColor: "bg-yellow-50" },
+                    { width: "100%", bgColor: "bg-yellow-50" },
+                    { width: "0%", bgColor: "" }
+                ]
+        }
+
+        if (validCount >= 5) {
+            return [
+                    { width: "100%", bgColor: "bg-green-secondary-40" },
+                    { width: "100%", bgColor: "bg-green-secondary-40" },
+                    { width: "100%", bgColor: "bg-green-secondary-40" }
+                ];
+        }
+        return [{ width: "0%", bgColor: "" }, { width: "0%", bgColor: "" }, { width: "0%", bgColor: "" }]
+        
+    }, [rules, value]);
 
     return (
         <div className="flex items-center gap-2">

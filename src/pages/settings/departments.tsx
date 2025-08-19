@@ -34,9 +34,10 @@ export const DepartmentsPage = () => {
             enableSorting: false,
             accessorKey: "hod",
             header: () => "Head of Department",
-            cell: () => {
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as FetchedDepartmentType
                 return (
-                    <span className="line-clamp-2">Ajayi Seyi</span>
+                    <span className="capitalize line-clamp-2 text-sm text-grey-40">{`${item?.department_head?.first_name || ""} ${item?.department_head?.last_name || ""}`}</span>
                 )
             }
         },
@@ -44,9 +45,10 @@ export const DepartmentsPage = () => {
             enableSorting: false,
             accessorKey: "no_of_division",
             header: () => "No. of Division",
-            cell: () => {
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as FetchedDepartmentType
                 return (
-                    <span className="line-clamp-2">3</span>
+                    <span className="line-clamp-2">{item?.children?.filter((child) => child?.level === "division")?.length}</span>
                 )
             }
         },
@@ -54,9 +56,10 @@ export const DepartmentsPage = () => {
             enableSorting: false,
             accessorKey: "no_of_branches",
             header: () => "No. of Branches",
-            cell: () => {
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as FetchedDepartmentType
                 return (
-                    <span className="line-clamp-2">3</span>
+                    <span className="line-clamp-2">{item?.children?.filter((child) => child?.level === "branch")?.length}</span>
                 )
             }
         },
@@ -64,9 +67,10 @@ export const DepartmentsPage = () => {
             enableSorting: false,
             accessorKey: "no_of_sections",
             header: () => "No. of Sections",
-            cell: () => {
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as FetchedDepartmentType
                 return (
-                    <span className="line-clamp-2">3</span>
+                    <span className="line-clamp-2">{item?.children?.filter((child) => child?.level === "section")?.length}</span>
                 )
             }
         },
@@ -101,7 +105,7 @@ export const DepartmentsPage = () => {
                 <div className="flex items-center justify-between p-4 bg-white-10 border border-[#DFE2E7] rounded-xl">
                     <div className="grid gap-1">
                         <h1 className="font-semibold text-xl text-black">Departments</h1>
-                        <p className="font-normal text-xs text-[#727A86]">Create and manage all the departments in your organisation</p>
+                        <p className="font-normal text-xs text-[#727A86]">Create and manage all the departments in your organization.</p>
                     </div>
                     <BaseButton type="button" size="small" theme="primary" variant="filled" onClick={() => setOpenAddUser(true)}>
                         Add Department

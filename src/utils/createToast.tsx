@@ -13,7 +13,7 @@ export function successToast(res: Record<string, any>) {
 
 export function errorToast(err: Record<string, any>) {
     createToast({
-        message: err?.param?.response?.data?.error ?? err?.msg,
+        message: err?.param?.response?.data?.message ?? err?.msg,
         type: "error",
     });
 }

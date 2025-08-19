@@ -1,4 +1,4 @@
-import { BaseInput } from "@/components/core"
+import { BaseInput, RenderIf } from "@/components/core"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
 import { useGetKRA } from "@/services/hooks/queries"
 import { useParams } from "react-router"
@@ -19,6 +19,7 @@ export const KraResponsibilityPage = () => {
             <div className="grid grid-cols-3">
                 <BaseInput label="Weight" type="text" {...register("weight")} readOnly />
             </div>
+            <RenderIf condition={!!(values?.responsibilities && (values?.responsibilities?.length > 0))}>
             <div className="flex border border-[#DFE2E7] rounded-lg px-6 pt-3 pb-12">
                 <div className="grid grid-cols-3 gap-8 w-full">
                 {
@@ -31,6 +32,7 @@ export const KraResponsibilityPage = () => {
                 }
                 </div>
             </div>
+            </RenderIf>
         </div>
     )
 }

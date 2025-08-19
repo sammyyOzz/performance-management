@@ -4,13 +4,25 @@ import { Icon } from "@iconify-icon/react"
 import { Button } from "@headlessui/react"
 import riCloseFill from "@iconify-icons/ri/close-fill"
 import { BaseInput } from "@/components/core"
+import { FetchedUserType } from "@/types/user"
+import { useFormikWrapper } from "@/hooks/useFormikWrapper"
 
 interface ViewUserProfileProps {
     isOpen: boolean;
     close: () => void;
+    user: FetchedUserType;
 }
 
-export const ViewUserProfile: FC<ViewUserProfileProps> = ({ isOpen, close }) => {
+export const ViewUserProfile: FC<ViewUserProfileProps> = ({ isOpen, close, user }) => {
+    const { register } = useFormikWrapper({
+        initialValues: {
+            ...user
+        },
+        enableReinitialize: true,
+        onSubmit() {
+            
+        },
+    })
     return (
         <Drawer.Root open={isOpen} onOpenChange={close} direction="right">
             <Drawer.Portal>
@@ -24,7 +36,7 @@ export const ViewUserProfile: FC<ViewUserProfileProps> = ({ isOpen, close }) => 
                         <div className="flex flex-col gap-14 h-full w-full max-w-2xl mx-auto">
                             <div className="flex flex-col gap-8 overflow-y-scroll scrollbar-hide">
                                 <div className="flex items-center justify-between gap-2">
-                                    <Drawer.Title className="font-semibold text-2xl text-gray-900">Aijay Solomon</Drawer.Title>
+                                    <Drawer.Title className="font-semibold text-2xl text-gray-900">{user?.first_name} {user?.last_name}</Drawer.Title>
                                     <Button type="button" className="p-3" onClick={() => close()}>
                                         <Icon icon={riCloseFill} width={16} height={16} />
                                     </Button>
@@ -33,15 +45,15 @@ export const ViewUserProfile: FC<ViewUserProfileProps> = ({ isOpen, close }) => 
                                 <div className="flex flex-col w-full gap-5">
                                     <div className="grid grid-cols-2 content-start gap-4">
                                         <div className="grid">
-                                            <BaseInput label="First Name" type="text" />
+                                            <BaseInput label="First Name" type="text" {...register("first_name")} />
                                         </div>
                                         <div className="grid">
-                                            <BaseInput label="Last Name" type="text" />
+                                            <BaseInput label="Last Name" type="text" {...register("last_name")} />
                                         </div>
                                     </div>
                                     <BaseInput label="Gender" type="text" />
                                     <BaseInput label="Marital Status" type="text" />
-                                    <BaseInput label="Email" type="text" />
+                                    <BaseInput label="Email" type="text" {...register("email")} />
                                     <BaseInput label="Department" type="text" />
                                     <BaseInput label="Job Role" type="text" />
                                     <BaseInput label="Role" type="text" />

@@ -24,6 +24,11 @@ export const LoginPage = () => {
     })
     return (
         <div className="flex flex-col gap-8 items-center justify-center max-w-md w-full mx-auto">
+            <img 
+                src={import.meta.env.VITE_DEMO === "true" ? "/appraisium-logo.png" : "/mpr_logo.svg"} 
+                alt={import.meta.env.VITE_DEMO === "true" ? "Demo Logo" : "Ministry of Petroleum Resources Logo"} 
+                className="h-14" 
+            />
             <div className="grid gap-0.5 text-center">
                 <h1 className="text-green-primary-50 text-3xl font-semibold">Log into your account</h1>
                 <p className="text-grey-40 text-base font-normal">Welcome back! Please enter your details to login</p>

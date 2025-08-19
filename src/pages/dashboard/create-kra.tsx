@@ -52,8 +52,9 @@ export const CreateDashboardKraPage = () => {
         validationSchema: createKRAStepTwoSchema,
         onSubmit(values) {
             if (!isPending && stepTwoForm.isValid) {
-                const newResponsibilities = values.responsibilities.map((item) => ({ department_id: parseInt(item.department_id), department_weight: parseInt(item.department_weight) }))
-                mutate({ ...stepOneForm.values, weight: parseInt(values.weight), responsibilities: newResponsibilities })
+                const { donor_funding, other_sources, ...rest } = stepOneForm.values
+                const newResponsibilities = values.responsibilities.map((item) => ({ department_id: parseInt(item.department_id), department_weight: Number(item.department_weight) }))
+                mutate({ ...rest, weight: Number(values.weight), responsibilities: newResponsibilities, donor_funding: !donor_funding ? 0 : Number(donor_funding), other_sources: !other_sources ? 0 : Number(other_sources)  })
             }
         },
     })

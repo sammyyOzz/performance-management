@@ -26,6 +26,10 @@ export interface PaginationProps {
   /**
    * Other unknown attributes
    */
+  goToPage: (page: number) => void;
+  /**
+   * Other unknown attributes
+   */
   [x: string]: any;
 }
 
@@ -33,7 +37,7 @@ export interface PaginationProps {
  * Pagination component for iterating through data on a table
  */
 
-export const Pagination: React.FC<PaginationProps> = ({ currentPage = 1, totalPages, prev, next, className }) => {
+export const Pagination: React.FC<PaginationProps> = ({ currentPage = 1, totalPages, prev, next, goToPage, className }) => {
 
     return (
         <div className={cn("pagination-container", className)}>
@@ -44,7 +48,7 @@ export const Pagination: React.FC<PaginationProps> = ({ currentPage = 1, totalPa
                 <div className="flex items-center gap-2">
                     {
                         [...Array(totalPages)].map((_, i) =>
-                            <Button key={i + 1} type="button" disabled={currentPage === (i + 1)} className={cn(currentPage === (i + 1) ? "pagination-number-button-inactive" : "pagination-number-button-active")}>{i + 1}</Button>
+                            <Button key={i + 1} type="button" disabled={currentPage === (i + 1)} className={cn(currentPage === (i + 1) ? "pagination-number-button-inactive" : "pagination-number-button-active")} onClick={() => goToPage(i + 1)}>{i + 1}</Button>
                         )
                     }
                 </div>

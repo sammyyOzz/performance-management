@@ -8,7 +8,7 @@ import { NavLink, Outlet, useLocation, useNavigate } from "react-router"
 import { AddUser } from "@/components/page/settings"
 
 const rolesAndPermissionsRoutes = [
-    { name: "Users", path: "/settings/team-members/users" },
+    { name: "Staff", path: "/settings/team-members/users" },
     { name: "Roles", path: "/settings/team-members/roles" },
 ]
 
@@ -32,7 +32,7 @@ export const RolesAndPermissionsPage = () => {
                         <p className="font-normal text-xs text-[#727A86]">Invite and manage team members in your organization</p>
                     </div>
                     <BaseButton type="button" size="small" theme="primary" variant="filled" onClick={() => setOpenAddUser(true)}>
-                        Add User
+                        Add Staff
                         <Add size="20" />
                     </BaseButton>
                 </div>

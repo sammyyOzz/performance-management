@@ -56,12 +56,12 @@ export const ComboBox: React.FC<ComboBoxProps<any>> = ({ label, help, error, sel
             <Combobox disabled={disabled} value={selected} defaultValue={defaultValue} virtual={{ options }} onChange={(value) => setSelected(value)} onClose={onClose}>
                 <div className="relative">
                 <ComboboxInput
-                    className="input pl-2 pr-8"
+                    className={cn("input pl-2 pr-8", error ? "input--border-error" : "input--border")} type="text"
                     displayValue={(item) => displayValue ? displayValue(item) : ""}
                     onChange={(event) => onChange(event.target.value)}
                     {...props}
                 />
-                <ComboboxButton className="group absolute inset-y-0 right-0 px-2.5">
+                <ComboboxButton className="group absolute inset-y-0 grid place-content-center right-0 px-2.5">
                     <Icon icon={riArrowDownSLine} className="size-5 text-[#98A2B3] group-data-[hover]:text-grey-40" />
                 </ComboboxButton>
                 </div>
@@ -80,7 +80,7 @@ export const ComboBox: React.FC<ComboBoxProps<any>> = ({ label, help, error, sel
                         {({ option }) => (
                             <ComboboxOption
                             value={option}
-                            className="group flex w-full cursor-pointer justify-between items-center gap-2 rounded-lg py-1.5 px-3 select-none data-[focus]:bg-green-primary-40"
+                            className="group flex w-full cursor-pointer justify-between items-center gap-2 rounded-lg py-1.5 px-3 select-none data-[focus]:bg-green-primary-10"
                             >
                             <div className="text-sm/6 text-grey-dark-2">{optionLabel(option)}</div>
                             <Icon icon="lucide:check" className="invisible size-4 text-green-1 group-data-[selected]:visible" />

@@ -29,3 +29,27 @@
 .badge-pending-icon {
   @apply bg-yellow-40;
 }
+
+.badge-done {
+  @apply bg-green-secondary-10 text-green-secondary-40;
+}
+
+.badge-done-icon {
+  @apply bg-green-secondary-40;
+}
+
+.badge-warning {
+  @apply bg-red-10 text-red-40;
+}
+
+.badge-warning-icon {
+  @apply bg-red-40;
+}
+
+.badge-active {
+  @apply bg-yellow-10 text-yellow-40;
+}
+
+.badge-active-icon {
+  @apply bg-yellow-40;
+}

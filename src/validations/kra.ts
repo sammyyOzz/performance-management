@@ -5,8 +5,8 @@ export const createKRAStepOneSchema = Yup.object().shape({
     description: Yup.string().required("Description is required"),
     budget_allocation: Yup.number().required("Budget allocation is required"),
     budget_released: Yup.number().required("Budget released is required"),
-    donor_funding: Yup.number().required("Donor funding is required"),
-    other_sources: Yup.number().required("Other sources is required"),
+    donor_funding: Yup.number(),
+    other_sources: Yup.number(),
 });
 
 export const createKRAStepTwoSchema = Yup.object().shape({

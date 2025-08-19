@@ -51,12 +51,12 @@ export const ViewDashboardKraPage = () => {
         }
     },[id, location.pathname, navigate])
     return (
-        <section className="flex py-9 px-5 md:px-8 lg:px-10 xl:px-12 2xl:px-0 page-height overflow-y-scroll">
+        <section className="flex py-9 px-5 md:px-8 lg:px-10 xl:px-12 2xl:px-0 page-height overflow-y-scroll bg-[#FFFFFF]">
             <RenderIf condition={!isLoading}>
                 <div className="flex flex-col flex-1 gap-5 max-w-screen-2xl mx-auto">
                     <div className="flex flex-col gap-5">
                         <Breadcrumb items={breadcrumbs} />
-                        <div className="flex flex-col items-start gap-4 md:gap-10 md:flex-row md:justify-between py-2">
+                        <div className="flex flex-col items-start gap-4 md:gap-10 md:flex-row md:justify-between py-2 px-6">
                             <div className="grid gap-0.5">
                                 <h1 className="font-semibold text-black text-2xl">{data?.name}</h1>
                                 <p className="font-normal text-gray-500 text-sm">See the key result area of the organisation</p>
@@ -73,7 +73,7 @@ export const ViewDashboardKraPage = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-col gap-6">
+                    <div className="flex flex-col gap-6 px-6">
                         <div className="flex items-center gap-1">
                             Status: <Badge status="pending" label="Active" size="medium" />
                         </div>

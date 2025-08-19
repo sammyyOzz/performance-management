@@ -1,21 +1,21 @@
 import { Routes, Route } from "react-router";
-import { BranchesKRAPage, DepartmentalKRAPage, DepartmentalOverviewPage, DepartmentalSubInitiativePage, DivisionKRAPage, KeyResultAreasPage, OfficersKraDescriptionPage, OfficersKRAPage, SectionsKRAPage, ViewDepartmentSubInitiativePage } from "@/pages/key-result-areas";
+import { BranchesKRAPage, DepartmentalKRAPage, DepartmentalOverviewPage, DepartmentalSubInitiativePage, DepartmentsPage, DivisionKRAPage, KeyResultAreasPage, OfficersKraDescriptionPage, SectionsKRAPage, ViewDepartmentSubInitiativePage } from "@/pages/key-result-areas";
 
 const KRAsRoutes = () => {
     return (
         <Routes>
             <Route path="" element={<KeyResultAreasPage />}>
-                <Route path="departments" element={<DepartmentalKRAPage />}>
+                <Route path="departments" element={<DepartmentsPage />} />
+                <Route path="departments/:id" element={<DepartmentalKRAPage />}>
                     <Route path="overview" element={<DepartmentalOverviewPage />} />
                     <Route path="sub-initiative" element={<DepartmentalSubInitiativePage />} />
+                    <Route path="sub-initiative/:kraId" element={<ViewDepartmentSubInitiativePage />} />
+                    <Route path="divisions" element={<DivisionKRAPage />} />
+                    <Route path="branches" element={<BranchesKRAPage />} />
+                    <Route path="sections" element={<SectionsKRAPage />} />
                 </Route>
-                <Route path="divisions" element={<DivisionKRAPage />} />
-                <Route path="branches" element={<BranchesKRAPage />} />
-                <Route path="sections" element={<SectionsKRAPage />} />
-                <Route path="officers" element={<OfficersKRAPage />} />
+                <Route path="officers/:id" element={<OfficersKraDescriptionPage />} />
             </Route>
-            <Route path="departments/sub-initiative/:id" element={<ViewDepartmentSubInitiativePage />} />
-            <Route path="officers/:id" element={<OfficersKraDescriptionPage />} />
         </Routes>
     );
 };

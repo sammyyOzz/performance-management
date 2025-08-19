@@ -1,55 +1,64 @@
 import { useCallback, useState } from "react"
 import { cn } from "@/lib/utils"
 import { motion } from "motion/react"
-import { useLocation } from "react-router"
 import { Icon } from "@iconify-icon/react"
 import riMore2Fill from "@iconify-icons/ri/more-2-fill"
+import { useLocation, useParams, useNavigate } from "react-router"
+import type { FetchedSubInitiative } from "@/types/sub-initiative"
 import { Badge, BaseSearch, Breadcrumb, Table } from "@/components/core"
 import { Add, Edit2, Eye, InfoCircle, More2, Trash } from "iconsax-react"
+import { useGetKRA, useGetSubInitiatives } from "@/services/hooks/queries"
 import { Button, Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react"
 import { getPaginationParams, updateQueryParams } from "@/hooks/usePaginationParams"
 import { CreateSubInitiative, DeleteSubInitiative, EditSubInitiative, ViewSubInitiative } from "@/components/page/key-result-areas"
 
 export const ViewDepartmentSubInitiativePage = () => {
+    const { kraId, id: departmentId } = useParams()
+    const navigate = useNavigate()
     const location = useLocation()
     const [itemsPerPage] = useState(15)
     const searchParams = new URLSearchParams(location.search)
     const [kraFilters, setKraFilters] = useState(
         getPaginationParams(searchParams, { page: 1 })
     )
-    
+    const { data: kra } = useGetKRA(kraId as string)
+    const { data: subInitiatives } = useGetSubInitiatives({ kraID: kraId })
     const [toggleModals, setToggleModals] = useState({
         openCreateSubInitiative: false,
         openDeleteSubInitiative: false,
         openEditSubInitiative: false,
         openViewSubInitiative: false,
+        activeSubInitiative: null as FetchedSubInitiative | null
     })
     
     const toggleCreateSubInitiative = useCallback(() => {
         setToggleModals((prev) => ({
-        ...prev,
-        openCreateSubInitiative: !toggleModals.openCreateSubInitiative,
+            ...prev,
+            openCreateSubInitiative: !toggleModals.openCreateSubInitiative,
         }))
     }, [toggleModals.openCreateSubInitiative])
     
-    const toggleDeleteSubInitiative = useCallback(() => {
+    const toggleDeleteSubInitiative = useCallback((item: FetchedSubInitiative | null) => {
         setToggleModals((prev) => ({
-        ...prev,
-        openDeleteSubInitiative: !toggleModals.openDeleteSubInitiative,
+            ...prev,
+            activeSubInitiative: item,
+            openDeleteSubInitiative: !toggleModals.openDeleteSubInitiative,
         }))
     }, [toggleModals.openDeleteSubInitiative])
     
-    const toggleEditSubInitiative = useCallback(() => {
+    const toggleEditSubInitiative = useCallback((item: FetchedSubInitiative | null) => {
         setToggleModals((prev) => ({
-        ...prev,
-        openEditSubInitiative: !toggleModals.openEditSubInitiative,
+            ...prev,
+            activeSubInitiative: item,
+            openEditSubInitiative: !toggleModals.openEditSubInitiative,
         }))
     }, [toggleModals.openEditSubInitiative])
     
-    const toggleViewSubInitiative = useCallback(() => {
+    const toggleViewSubInitiative = useCallback((item: FetchedSubInitiative | null) => {
         setToggleModals((prev) => ({
-        ...prev,
-        openViewSubInitiative: !toggleModals.openViewSubInitiative,
+            ...prev,
+            activeSubInitiative: item,
+            openViewSubInitiative: !toggleModals.openViewSubInitiative,
         }))
     }, [toggleModals.openViewSubInitiative])
     
@@ -61,8 +70,9 @@ export const ViewDepartmentSubInitiativePage = () => {
         { icon: <More2 size="20" color="#003A2B"/>, label: "Total Assigned Weight", value: "6" },
     ]
     const breadcrumbs = [
-        { label: "Dept. KRAs", href: "/kra/departments/sub-initiative" },
-        { label: "Sub-Initiative", href: "/kra/departments/sub-initiative/1" },
+        { label: "Departments", href: "/kra/departments" },
+        { label: "KRAs", href: `/kra/departments/${departmentId}/sub-initiative` },
+        { label: "Sub-Initiative", href: `/kra/departments/${departmentId}/sub-initiative/${kraId}` },
     ]
 
     const columns = [
@@ -70,18 +80,20 @@ export const ViewDepartmentSubInitiativePage = () => {
             enableSorting: false,
             accessorKey: "sub_initiative",
             header: () => "Sub-Initiatives",
-            cell: () => {
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as FetchedSubInitiative;
                 return (
-                    <span className="line-clamp-2">Staff Pension and Retirement</span>
+                    <span className="line-clamp-2 capitalize">{item?.name}</span>
                 )
             }
         },
         {
-            accessorKey: "graded_weights",
+            accessorKey: "graded_weight",
             header: () => "Graded Weight",
-            cell: () => {
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as FetchedSubInitiative;
                 return (
-                    <span className="line-clamp-2">8.79</span>
+                    <span className="line-clamp-2">{item?.graded_weight}</span>
                 )
             }
         },
@@ -89,18 +101,20 @@ export const ViewDepartmentSubInitiativePage = () => {
             enableSorting: false,
             accessorKey: "kpi",
             header: () => "KPIs",
-            cell: () => {
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as FetchedSubInitiative;
                 return (
-                    <span className="line-clamp-2">56% of pensioners and retirees benfits paid</span>
+                    <span className="line-clamp-2">{item?.kpi}</span>
                 )
             }
         },
         {
             accessorKey: "assigned_weights",
             header: () => "Assigned Weight",
-            cell: () => {
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as FetchedSubInitiative;
                 return (
-                    <span className="line-clamp-2">2</span>
+                    <span className="line-clamp-2">{item?.assigned_weight}</span>
                 )
             }
         },
@@ -108,9 +122,10 @@ export const ViewDepartmentSubInitiativePage = () => {
             enableSorting: false,
             accessorKey: "target",
             header: () => "Target",
-            cell: () => {
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as FetchedSubInitiative;
                 return (
-                    <span className="line-clamp-2">A work plan</span>
+                    <span className="line-clamp-2">{item?.target}</span>
                 )
             }
         },
@@ -128,7 +143,8 @@ export const ViewDepartmentSubInitiativePage = () => {
             enableSorting: false,
             accessorKey: "action",
             header: () => "Action",
-            cell: () => {
+            cell: ({ row }: { row: any }) => {
+                const item = row?.original as FetchedSubInitiative;
                 return (
                     <Menu>
                         <MenuButton className="inline-flex items-center gap-2 rounded-lg bg-white-10 border border-[#E4E7EC] p-2 text-sm/6 font-semibold focus:outline-none">
@@ -140,19 +156,19 @@ export const ViewDepartmentSubInitiativePage = () => {
                             className="w-28 origin-top-right rounded-lg shadow-lg bg-white-10 p-2 space-y-2 text-xs transition duration-100 ease-out [--anchor-gap:var(--spacing-2)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
                         >
                             <MenuItem>
-                                <button type="button" className="group flex w-full items-center text-green-primary-40 gap-2 rounded-lg py-1.5 px-3" onClick={() => toggleViewSubInitiative()}>
+                                <button type="button" className="group flex w-full items-center text-green-primary-40 gap-2 rounded-lg py-1.5 px-3" onClick={() => toggleViewSubInitiative(item)}>
                                     <Eye size="16" color="#003A2B"/>
                                     View
                                 </button>
                             </MenuItem>
                             <MenuItem>
-                                <button type="button" className="group flex w-full items-center text-green-primary-40 gap-2 rounded-lg py-1.5 px-3" onClick={() => toggleEditSubInitiative()}>
+                                <button type="button" className="group flex w-full items-center text-green-primary-40 gap-2 rounded-lg py-1.5 px-3" onClick={() => toggleEditSubInitiative(item)}>
                                     <Edit2 size="16" color="#003A2B"/>
                                     Edit
                                 </button>
                             </MenuItem>
                             <MenuItem>
-                                <button type="button" className="group flex w-full items-center text-red-40 gap-2 rounded-lg py-1.5 px-3" onClick={() => toggleDeleteSubInitiative()}>
+                                <button type="button" className="group flex w-full items-center text-red-40 gap-2 rounded-lg py-1.5 px-3" onClick={() => toggleDeleteSubInitiative(item)}>
                                     <Trash size="16" color="#D42620"/>
                                     Delete
                                 </button>
@@ -174,14 +190,23 @@ export const ViewDepartmentSubInitiativePage = () => {
 
     };
     return (
-        <section className="flex py-3.5 px-5 md:px-8 lg:px-10 xl:px-12 2xl:px-0 page-height overflow-y-scroll">
+        <section className="flex py-3.5 px-5 md:px-8 lg:px-10 xl:px-12 2xl:px-12 page-height overflow-y-scroll bg-[#FFFFFF]">
             <div className="flex flex-col flex-1 gap-10 max-w-screen-2xl mx-auto">
                 <div className="flex flex-col gap-3.5">
+                    <div className="flex items-center gap-2">
+                        <button 
+                            onClick={() => navigate(`/kra/departments/${departmentId}/sub-initiative`)}
+                            className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700"
+                        >
+                            <Icon icon="ri:arrow-left-line" width={20} height={20} />
+                            Back to KRAs
+                        </button>
+                    </div>
                     <Breadcrumb items={breadcrumbs} />
                     <div className="grid gap-5">
                         <div className="flex flex-col items-start gap-4 md:gap-0 md:flex-row md:items-center md:justify-between py-2 border-b border-b-[#DFE2E7]">
                             <div className="grid gap-0.5">
-                                <h1 className="font-semibold text-black text-2xl">Staff Welfare</h1>
+                                <h1 className="font-semibold text-black text-2xl capitalize">{kra?.name}</h1>
                                 <p className="font-normal text-gray-500 text-sm">See the sub-initiative of a key result area</p>
                             </div>
                             <div className="flex items-center justify-end gap-3 p-3 rounded bg-green-secondary-10">
@@ -237,19 +262,20 @@ export const ViewDepartmentSubInitiativePage = () => {
                     </div>
                     <Table
                         columns={columns}
-                        data={[""]}
+                        data={subInitiatives || []}
                         perPage={itemsPerPage}
                         page={Number(kraFilters.page)}
                         onPageChange={handlePageChange}
                         totalCount={30}
+                        emptyStateImage=""
                         emptyStateText="We couldn't find any kra on the system."
                     />
                 </div>
             </div>
             <CreateSubInitiative isOpen={toggleModals.openCreateSubInitiative} close={() => toggleCreateSubInitiative()} />
-            <DeleteSubInitiative isOpen={toggleModals.openDeleteSubInitiative} close={() => toggleDeleteSubInitiative()} />
-            <EditSubInitiative isOpen={toggleModals.openEditSubInitiative} close={() => toggleEditSubInitiative()} />
-            <ViewSubInitiative isOpen={toggleModals.openViewSubInitiative} close={() => toggleViewSubInitiative()} />
+            <DeleteSubInitiative id={toggleModals.activeSubInitiative?.id.toString() as string} isOpen={toggleModals.openDeleteSubInitiative} close={() => toggleDeleteSubInitiative(null)} />
+            <EditSubInitiative id={toggleModals.activeSubInitiative?.id.toString() as string} isOpen={toggleModals.openEditSubInitiative} close={() => toggleEditSubInitiative(null)} />
+            <ViewSubInitiative item={toggleModals.activeSubInitiative as FetchedSubInitiative} isOpen={toggleModals.openViewSubInitiative} close={() => toggleViewSubInitiative(null)} />
         </section>
     )
 }

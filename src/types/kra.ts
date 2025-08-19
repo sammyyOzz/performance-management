@@ -2,9 +2,9 @@ export type CreateKRAParams = {
     budget_allocation: string;
     budget_released: string;
     description: string;
-    donor_funding: string;
+    donor_funding: number;
     name: string;
-    other_sources: string;
+    other_sources: number;
     responsibilities: {
         department_id: number;
         department_weight: number;
@@ -25,6 +25,7 @@ export interface SingleKraType {
         department_id: number;
         department_weight: number;
         department_name: string;
+        id: number;
     }[]
 }
 
@@ -42,7 +43,17 @@ export interface FetchedKRAType {
 }
 
 export interface FetchKRAsQuery {
-    filter?: string;
+    id?: string;
+    department_id?: string;
+    user_id?: string;
+    title?: string;
+    status?: string;
+    description?: string;
     page?: string;
     page_size?: string;
+    parentID?: string;
+    year?: string;
+    search?: string;
+    level?: "department" | "division" | "branch" | "section";
+    filter?: string;
 }

@@ -85,11 +85,11 @@ export const BaseInput: React.FC<InputProps> = forwardRef(({ label, error, optio
                     <Icon icon={iconRight as IconifyIcon} className="size-5 right-4 text-grey-30 peer-disabled:text-gray-300 peer-focus:text-grey-40 transition-colors duration-500 ease-out ml-auto my-auto inset-0 absolute" width={20} height={20} />
                 </RenderIf>
             </div>
-            <RenderIf condition={!!help}>
-                <Description className="flex items-start gap-1 text-xs text-gray-500">{help}</Description>
-            </RenderIf>
             <RenderIf condition={!!error}>
                 <span className="input--error">{error}</span>
+            </RenderIf>
+            <RenderIf condition={!!help}>
+                <Description className="flex items-start gap-1 text-xs text-gray-500">{help}</Description>
             </RenderIf>
         </Field>
     );
